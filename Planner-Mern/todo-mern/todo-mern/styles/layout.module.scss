@@ -1,0 +1,139 @@
+@use "color-palette" as cp;
+.light {
+  $primary: cp.$indigo-hex;
+  $secondary: cp.$medium-spring-green-hex;
+  $color: cp.$black-hex;
+  $background: cp.$white-hex;
+  $grad: cp.$white-blue-green-gradient;
+  color: $color;
+  background: $background;
+
+  .button {
+    background: $primary;
+  }
+
+  .main-content {
+    display: flex;
+  }
+  main {
+    flex: 76%;
+    // background-color: red;
+  }
+  .main-full {
+    flex: 90%;
+  }
+  .sidenav {
+    // position: absolute;
+    flex: 24%;
+    // z-index: -1;
+    top: 0;
+    min-width: 300px;
+    height: calc(100vh - 85px);
+    box-shadow: inset 1px 1px 20px 1px transparentize($color, 0.9);
+    margin-top: 20px;
+    margin-left: 10px;
+    margin-bottom: 20px;
+    border-radius: 1rem;
+    transition: flex 200ms ease-in-out, opacity 200ms;
+
+    display: grid;
+    justify-content: center;
+    align-content: space-evenly;
+    svg {
+      font-size: 40px;
+      cursor: pointer;
+      color: $background;
+    }
+    svg:hover {
+      font-size: 37px;
+      transition: 400ms;
+      padding: 0;
+      margin: 0;
+    }
+    svg:active {
+      transform: scale(0.8);
+    }
+  }
+  .sidenav-hidden {
+    flex: 0;
+    visibility: hidden;
+    max-width: 90px;
+    top: 0;
+    opacity: 0;
+    height: calc(100vh - 105px);
+    box-shadow: inset 1px 1px 20px 1px transparentize($color, 0.9);
+    margin-top: 20px;
+    margin-left: 10px;
+    margin-bottom: 20px;
+    border-radius: 1rem;
+    padding-top: 20px;
+
+    display: grid;
+    justify-content: center;
+    align-content: flex-start;
+    gap: 30px;
+
+    transition: visibility 100ms, width 800ms, opacity 300ms, flex 1s;
+    svg {
+      font-size: 40px;
+      cursor: pointer;
+      opacity: 0;
+    }
+    svg:hover {
+      font-size: 30px;
+      transform-style: preserve-3d;
+      transform: perspective(1000px) translateZ(50px);
+      border: 3px solid black;
+      border-radius: 50%;
+      padding: 0;
+      margin: 0;
+    }
+    svg:active {
+      color: lighten($color: $color, $amount: 30);
+      font-size: 29px;
+    }
+  }
+  .controls {
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    background-image: $grad;
+    width: 250px;
+    padding: 5px;
+    border-radius: 1rem;
+  }
+  .controls:hover {
+    box-shadow: 0 5px 20px 5px transparentize($color: $color, $amount: 0.8);
+  }
+}
+
+.dark {
+  $secondary: cp.$indigo-hex;
+  $primary: cp.$medium-spring-green-hex;
+  $background: cp.$black-hex;
+  $color: cp.$white-hex;
+  color: $color;
+  background: $background;
+  .button {
+    background: $primary;
+  }
+  .nav {
+    // colors
+    background: darken($color: $background, $amount: 1px);
+    box-shadow: 0px 1px 9px 1px transparentize($color, 0.85);
+
+    //layout
+    display: flex;
+    align-items: center;
+    gap: 20px;
+
+    padding: 0 20px;
+    svg {
+      flex: 2;
+    }
+    p {
+      flex: 1;
+      text-align: center;
+    }
+  }
+}

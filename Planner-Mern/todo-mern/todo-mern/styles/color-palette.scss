@@ -1,0 +1,64 @@
+/* SCSS HEX */
+$black-hex: #000000ff;
+$indigo-hex: #42047eff;
+$medium-spring-green-hex: #07f49eff;
+$white-hex: #ffffffff;
+
+/* SCSS HSL */
+$black-hsl: hsla(0, 0%, 0%, 1);
+$indigo-hsl: hsla(270, 94%, 25%, 1);
+$medium-spring-green-hsl: hsla(158, 94%, 49%, 1);
+$white-hsl: hsla(0, 0%, 100%, 1);
+
+/* SCSS RGB */
+$black-rgb: rgba(0, 0, 0, 1);
+$indigo-rgb: rgba(66, 4, 126, 1);
+$medium-spring-green-rgb: rgba(7, 244, 158, 1);
+$white-rgb: rgba(255, 255, 255, 1);
+
+$black-blue-gradient: linear-gradient(
+  225deg,
+  hsla(270, 94%, 25%, 1) 0%,
+  hsla(0, 0%, 0%, 1) 100%
+);
+
+$black-green-gradient: linear-gradient(
+  225deg,
+  hsla(158, 94%, 49%, 1) 0%,
+  hsla(0, 0%, 0%, 1) 100%
+);
+
+$white-blue-gradient: linear-gradient(
+  225deg,
+  hsla(270, 94%, 25%, 1) 0%,
+  hsla(0, 0%, 100%, 1) 100%
+);
+
+$white-green-gradient: linear-gradient(
+  225deg,
+  hsla(158, 94%, 49%, 1) 0%,
+  hsla(0, 0%, 100%, 1) 100%
+);
+
+$white-blue-green-gradient: linear-gradient(
+  225deg,
+  hsla(158, 94%, 49%, 1) 0%,
+  hsla(174, 70%, 36%, 1) 10%,
+  hsla(221, 48%, 36%, 1) 33%,
+  hsla(270, 94%, 25%, 1) 51%,
+  hsla(270, 36%, 47%, 1) 70%,
+  hsla(271, 32%, 75%, 1) 88%,
+  hsla(0, 0%, 100%, 1) 100%
+);
+
+$black-blue-green-gradient: linear-gradient(
+  225deg,
+  hsla(158, 94%, 49%, 1) 0%,
+  hsla(174, 70%, 36%, 1) 10%,
+  hsla(221, 48%, 36%, 1) 33%,
+  hsla(270, 94%, 25%, 1) 51%,
+  hsla(271, 66%, 24%, 1) 63%,
+  hsla(270, 37%, 24%, 1) 78%,
+  hsla(270, 36%, 13%, 1) 95%,
+  hsla(0, 0%, 0%, 1) 100%
+);
