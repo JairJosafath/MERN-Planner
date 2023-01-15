@@ -1,4 +1,5 @@
 const express = require("express");
+const cors = require("cors");
 const router = express.Router();
 const postProject = require("../controllers/Project/postProject");
 const getProjects = require("../controllers/Project/getProjects");
@@ -24,6 +25,7 @@ router.post("/addproject", (req, res) => {
   postProject(req, res);
 });
 //get
+
 router.get("/getprojects", (req, res) => {
   getProjects(res);
 });

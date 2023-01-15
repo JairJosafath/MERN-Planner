@@ -19,16 +19,17 @@ import Sidenav from "../Sidenav";
 
 interface props {
   children: ReactNode;
+  projects: any;
 }
 export const Ctx = createContext<
   | { darkMode: boolean; setDarkMode: Dispatch<SetStateAction<boolean>> }
   | undefined
 >(undefined);
 
-export default function Layout({ children }: props) {
+export default function Layout({ children, projects }: props) {
   const [darkMode, setDarkMode] = useState(false);
-  const [showSideNav, setShowSideNav] = useState<boolean>(false);
-
+  const [showSideNav, setShowSideNav] = useState<boolean>(true);
+  console.log(projects);
   return (
     <div className={darkMode ? styles.dark : styles.light}>
       <Ctx.Provider value={{ darkMode, setDarkMode }}>

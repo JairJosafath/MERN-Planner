@@ -90,12 +90,15 @@ export default function Sidenav({ showSideNav }: Props) {
   const classNamesMenu = showSideNav
     ? styles["sidenav-light"]
     : styles["sidenav-hidden"];
+  const classNamesControl = showSideNav
+    ? styles["controls-light"]
+    : styles["hidden"];
   return (
     <>
       {/* sidenav */}
       <div className={classNamesMenu}>
         <div
-          className={styles["controls-light"]}
+          className={classNamesControl}
           onMouseEnter={(e) => mouseEnter(e)}
           onMouseMove={(e) => mouseMove(e)}
           onMouseLeave={(e) => mouseLeave(e)}
