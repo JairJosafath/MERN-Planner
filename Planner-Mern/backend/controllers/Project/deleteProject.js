@@ -1,5 +1,6 @@
 const Project = require("../../models/project");
 const { TaskModel } = require("../../models/task");
+const { todoModel } = require("../../models/todo");
 
 module.exports = function (req, res) {
   async function fn() {
@@ -9,9 +10,16 @@ module.exports = function (req, res) {
       // const updated = await Project.findByIdAndDelete(req.params.id);
 
       if (temp.tasks)
-        temp.tasks.map((task) => {
-          const tempTask = TaskModel.findByIdAndDelete(task.id);
-          tempTask.exec();
+        temp.tasks.map(async (task) => {
+          const tempTask = await TaskModel.findById(task.id);
+          if (tempTask.todos) {
+            tempTask.todos.map(async (todo) => {
+              const tempTodo = await todoModel.findByIdAndDelete(todo.id);
+              // tempTodo.exec();
+            });
+          }
+
+          tempTask.delete();
         });
       else if (temp?.tasks?.length < 1 || !temp.tasks) {
         console.log("no tasks");
