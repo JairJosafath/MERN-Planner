@@ -8,9 +8,9 @@ import {
   AiOutlineExclamation,
   AiOutlineMore,
 } from "react-icons/ai";
-import { useContext, useState } from "react";
+import { useContext, useState, useEffect } from "react";
 import { Ctx } from "../../components/Layout";
-import Project from "../../components/project";
+import Project from "../../components/Project";
 import AddTodo from "../../components/addTodo";
 import { Router, useRouter } from "next/router";
 
@@ -18,14 +18,17 @@ interface Props {
   projects: ProjectI[];
 }
 export default function Projects({ projects }: Props) {
-  // console.log(projects);
-  // const [showmenu, setShowMenu] = useState<string | undefined>("");
-  // const [showPriorityMenu, setShowPriorityMenu] = useState<string | undefined>(
-  //   ""
-  // );
   const router = useRouter();
 
   const [shownewProject, setShownewProject] = useState(false);
+  const [reload, setReload] = useState(false);
+
+  useEffect(() => {
+    if (reload) {
+      router.replace(router.asPath);
+      setReload(false);
+    }
+  }, [reload, router]);
   return (
     <div className={styles.wrapper}>
       <div className={styles.controls}>
@@ -38,12 +41,12 @@ export default function Projects({ projects }: Props) {
       </div>
       {shownewProject ? (
         <div style={{ marginBottom: "30px" }}>
-          <Project />
+          <Project setReload={setReload} />
         </div>
       ) : null}
       <div className={styles.content}>
         {projects?.map((proj) => (
-          <Project key={proj._id} proj={proj} />
+          <Project key={proj._id} proj={proj} setReload={setReload} />
         ))}
       </div>
     </div>

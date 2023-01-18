@@ -8,8 +8,9 @@ import {
 } from "react-icons/ai";
 import styles from "../../styles/components/task/task.module.scss";
 import AddTodo from "../../components/addTodo";
-import { useState } from "react";
-import { Task as Taski, Todo } from "../../types/types";
+import { useState, useEffect } from "react";
+import { Task as Taski, Todo as TodoI } from "../../types/types";
+import Todo from "../../components/Todo";
 
 interface Props {
   task: Taski;
@@ -19,26 +20,22 @@ export default function Task({ task }: Props) {
   const { id } = router.query;
   const [shownewTodo, setShownewTodo] = useState(false);
   const [showmenu, setShowMenu] = useState("");
-  function handleDeleteTodo(id: string) {
-    async function fn() {
-      const res = await fetch(`/api/deletetodo/${id}`, {
-        headers: {
-          "Content-Type": "application/json",
-        },
-        method: "DELETE",
-      });
+  const [reload, setReload] = useState(false);
 
-      console.log(await res.json());
+  useEffect(() => {
+    if (reload) {
+      router.replace(router.asPath);
+      setReload(false);
     }
-    if (id) fn();
-  }
+  }, [reload, router]);
+
   return (
     <>
       <div
         className={styles.wrapper}
         onClick={() => (showmenu ? setShowMenu("") : null)}
       >
-        <h1> Task : {task.name}</h1>
+        <h1> Task : {task?.name}</h1>
 
         <div className={styles.controls}>
           <h2>Todos:</h2>
@@ -48,44 +45,10 @@ export default function Task({ task }: Props) {
             className={shownewTodo ? styles.rotated : undefined}
           />
         </div>
-        {shownewTodo ? <AddTodo taskId={id} /> : null}
+        {shownewTodo ? <Todo setReload={setReload} /> : null}
         <ul className={styles.grid}>
-          {task?.todos?.map((todo: Todo) => (
-            <li key={todo._id}>
-              <div>
-                <div className={styles["flex-header"]}>
-                  <h3>{todo.title}</h3>
-                  <div>
-                    <div className={styles["color-circle"]} />
-                    <AiOutlineExclamation />
-                    <AiFillCheckSquare />
-                    <AiOutlineMore
-                      onClick={() => setShowMenu(todo._id ? todo._id : "")}
-                    />
-                  </div>
-                </div>
-                {showmenu === todo._id ? (
-                  <menu className={styles.menu} onClick={() => setShowMenu("")}>
-                    <ul>
-                      <li>archive todo</li>
-                      <li
-                        onClick={() =>
-                          handleDeleteTodo(todo._id ? todo._id : "")
-                        }
-                      >
-                        delete todo
-                      </li>
-                    </ul>
-                  </menu>
-                ) : null}
-
-                <p>{todo?.description}</p>
-                <h6 key={todo?._id}>
-                  {`startdate: ${todo?.startDate}
-                  due Date:${todo?.dueDate}`}
-                </h6>
-              </div>
-            </li>
+          {task?.todos?.map((todo: TodoI) => (
+            <Todo key={todo?._id} todo={todo} setReload={setReload} />
           ))}
         </ul>
       </div>

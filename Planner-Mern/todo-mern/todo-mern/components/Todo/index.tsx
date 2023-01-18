@@ -1,4 +1,4 @@
-import { Project as ProjectI } from "../../types/types";
+import { Todo as TodoI } from "../../types/types";
 import styles from "../../styles/components/projects/projects.module.scss";
 import {
   AiFillCheckSquare,
@@ -16,12 +16,14 @@ import {
 } from "react";
 import { Ctx } from "../Layout";
 import { formatDate } from "../../util";
-import { useRouter } from "next/router";
+import { NextRouter, useRouter } from "next/router";
 interface Props {
-  proj?: ProjectI;
+  todo?: TodoI;
   setReload?: Dispatch<SetStateAction<boolean>>;
 }
-export default function Project({ proj, setReload }: Props) {
+export default function Todo({ todo, setReload }: Props) {
+  const router = useRouter();
+  const { id } = router.query;
   const context = useContext(Ctx);
   const [showmenu, setShowMenu] = useState<string | undefined>("");
   const [showPriorityMenu, setShowPriorityMenu] = useState<string | undefined>(
@@ -29,118 +31,124 @@ export default function Project({ proj, setReload }: Props) {
   );
   const [showColorMenu, setShowColorMenu] = useState<string | undefined>("");
   const [color, setColor] = useState("");
-  const [name, setName] = useState(proj?.name);
-  const [description, setDescription] = useState(proj?.description);
+  const [title, setName] = useState(todo?.title);
+  const [description, setDescription] = useState(todo?.description);
   const [startDate, setStartDate] = useState(
-    formatDate(proj?.startDate ? proj?.startDate : "")
+    formatDate(todo?.startDate ? todo?.startDate : "")
   );
   const [dueDate, setDueDate] = useState(
-    formatDate(proj?.dueDate ? proj?.dueDate : "")
+    formatDate(todo?.dueDate ? todo?.dueDate : "")
   );
-  const [newProject, setNewProject] = useState<ProjectI>();
-  const router = useRouter();
+  const [newTodo, setNewTodo] = useState<TodoI>();
+
   useEffect(() => {
     let timeout: NodeJS.Timeout;
-    if ((name ? name?.length > 3 : false) && name !== proj?.name && proj?._id)
+    if (
+      (title ? title?.length > 3 : false) &&
+      title !== todo?.title &&
+      todo?._id
+    )
       timeout = setTimeout(() => {
-        updateProject(proj?._id, { name: name });
+        updateTodo(todo?._id, { title: title });
         setReload ? setReload(true) : console.log("gmhh no reload");
       }, 1000);
     return () => clearTimeout(timeout);
-  }, [name, proj?._id, proj?.name, setReload]);
+  }, [setReload, title, todo?._id, todo?.title]);
 
   useEffect(() => {
     let timeout: NodeJS.Timeout;
     if (
       (description ? description?.length > 3 : false) &&
-      description !== proj?.description &&
-      proj?._id
+      description !== todo?.description &&
+      todo?._id
     )
       timeout = setTimeout(() => {
-        updateProject(proj?._id, { description: description });
+        updateTodo(todo?._id, { description: description });
         setReload ? setReload(true) : console.log("gmhh no reload");
       }, 1000);
     return () => clearTimeout(timeout);
-  }, [description, proj?._id, proj?.description, setReload]);
+  }, [description, setReload, todo?._id, todo?.description]);
 
   useEffect(() => {
     if (
-      formatDate(proj?.startDate ? proj?.startDate : "") !== startDate &&
-      proj?._id
+      formatDate(todo?.startDate ? todo?.startDate : "") !== startDate &&
+      todo?._id
     )
-      updateProject(proj?._id, { startDate: startDate });
+      updateTodo(todo?._id, { startDate: startDate });
     setReload ? setReload(true) : console.log("gmhh no reload");
-  }, [startDate, proj?._id, proj?.startDate, setReload]);
+  }, [setReload, startDate, todo?._id, todo?.startDate]);
   useEffect(() => {
-    if (formatDate(proj?.dueDate ? proj?.dueDate : "") !== dueDate && proj?._id)
-      updateProject(proj?._id, { dueDate: dueDate });
+    if (formatDate(todo?.dueDate ? todo?.dueDate : "") !== dueDate && todo?._id)
+      updateTodo(todo?._id, { dueDate: dueDate });
     setReload ? setReload(true) : console.log("gmhh no reload");
-  }, [dueDate, proj?._id, proj?.dueDate, setReload]);
+  }, [dueDate, setReload, todo?._id, todo?.dueDate]);
   useEffect(() => {
-    if (!proj?._id) {
-      setNewProject({
-        name: name,
+    if (!todo?._id) {
+      setNewTodo({
+        title: title,
         description: description,
         startDate: startDate,
         dueDate: dueDate,
         color: color,
       });
     }
-  }, [color, description, dueDate, name, proj?._id, startDate]);
+  }, [color, description, dueDate, title, todo?._id, startDate, id]);
 
   return (
     <div
-      key={proj?._id}
+      key={todo?._id}
       className={
         context?.darkMode ? styles["project-dark"] : styles["project-light"]
       }
       onClick={() => {
         showmenu ? setShowMenu("") : null;
         showPriorityMenu ? setShowPriorityMenu("") : null;
+        // todo?._id ? router.push(`/todo/${todo?._id}`) : null;
       }}
     >
       <div className={styles["flex-header"]}>
         <input
           type={"text"}
-          value={name}
-          placeholder="project name"
-          onChange={(e) => setName(e.target.value)}
+          value={title}
+          placeholder="todo title"
+          onChange={(e) => {
+            e.stopPropagation();
+            setName(e.target.value);
+          }}
         />
         <div>
-          <div
-            className={styles["color-circle"]}
-            onClick={(e) => {
-              e.stopPropagation();
-              showColorMenu === proj?._id
-                ? setShowColorMenu("")
-                : setShowColorMenu(proj?._id);
-            }}
-            style={{ background: proj?.color ? proj?.color : "grey" }}
-          />
-          {proj ? (
+          {todo ? (
             <>
+              <div
+                className={styles["color-circle"]}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  showColorMenu === todo?._id
+                    ? setShowColorMenu("")
+                    : setShowColorMenu(todo?._id);
+                }}
+                style={{ background: todo?.color ? todo?.color : "grey" }}
+              />
               <AiFillExclamationCircle
                 color={
-                  proj?.priority === 1
+                  todo?.priority === 1
                     ? "red"
-                    : proj?.priority === 2
+                    : todo?.priority === 2
                     ? "orange"
                     : "blue"
                 }
                 onClick={(e) => {
                   e.stopPropagation();
-                  showPriorityMenu
-                    ? setShowPriorityMenu("")
-                    : setShowPriorityMenu(proj?._id);
+                  setShowPriorityMenu(todo?._id);
                 }}
               />
               <AiFillCheckSquare
-                color={proj?.status === "in progress" ? "grey" : "green"}
+                color={todo?.status === "in progress" ? "grey" : "green"}
                 onClick={(e) => {
                   e.stopPropagation();
-                  updateProject(
-                    proj?._id,
-                    proj?.status === "in progress"
+                  updateTodo(
+                    todo?._id,
+                    todo?.status === "in progress"
                       ? { status: "completed" }
                       : { status: "in progress" }
                   );
@@ -150,51 +158,60 @@ export default function Project({ proj, setReload }: Props) {
               <AiOutlineMore
                 onClick={(e) => {
                   e.stopPropagation();
-
-                  showmenu ? setShowMenu("") : setShowMenu(proj?._id);
+                  showmenu ? setShowMenu("") : setShowMenu(todo?._id);
                 }}
               />
             </>
           ) : null}
         </div>
       </div>
-      {showmenu === proj?._id ? (
-        <menu
-          className={styles.menu}
-          onClick={(e) => {
-            e.stopPropagation();
-            setShowMenu("");
-          }}
-        >
+      {showmenu === todo?._id ? (
+        <menu className={styles.menu} onClick={() => setShowMenu("")}>
           <ul>
-            <li onClick={() => router.push(`/project/${proj?._id}`)}>
-              open project
-            </li>
+            {/* <li>archive todo</li> */}
             <li
               onClick={(e) => {
                 e.stopPropagation();
-                handleDeleteProject(proj?._id);
-                setShowMenu("");
+                handleDeleteTodo(todo?._id);
                 setReload ? setReload(true) : console.log("gmhh no reload");
+                setShowMenu("");
               }}
             >
-              delete project
+              delete todo
             </li>
           </ul>
         </menu>
       ) : null}
       <div>
-        {showColorMenu === proj?._id ? (
+        {showmenu === todo?._id ? (
+          <menu className={styles.menu} onClick={() => setShowMenu("")}>
+            <ul>
+              {/* <li>archive todo</li> */}
+              <li
+                onClick={(e) => {
+                  e.stopPropagation();
+                  handleDeleteTodo(todo?._id);
+                  setReload ? setReload(true) : console.log("gmhh no reload");
+                }}
+              >
+                delete todo
+              </li>
+            </ul>
+          </menu>
+        ) : null}
+        {showColorMenu === todo?._id ? (
           <menu className={styles.menu}>
             <ul>
               {["red", "green", "blue", "yellow"].map((c, index) => (
                 <div
                   key={c}
                   className={styles["color-circle"]}
-                  onClick={() => {
-                    updateProject(proj?._id, { color: c });
-                    setShowColorMenu("");
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    updateTodo(todo?._id, { color: c });
                     setReload ? setReload(true) : console.log("gmhh no reload");
+
+                    setShowColorMenu("");
                   }}
                   style={{ background: c }}
                 ></div>
@@ -209,33 +226,48 @@ export default function Project({ proj, setReload }: Props) {
                   />
                 </div>
                 <button
-                  onClick={() => {
+                  onClick={(e) => {
                     if (color) {
-                      updateProject(proj?._id, { color: color });
-                      setColor("");
+                      e.stopPropagation();
+                      updateTodo(todo?._id, { color: color });
                       setReload
                         ? setReload(true)
                         : console.log("gmhh no reload");
+                      setColor("");
                     }
                     setShowColorMenu("");
                   }}
                 >
                   Set
                 </button>
-                <button onClick={() => setShowColorMenu("")}>cancel</button>
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setShowColorMenu("");
+                  }}
+                >
+                  cancel
+                </button>
               </div>
             </ul>
           </menu>
         ) : null}
-        {showPriorityMenu === proj?._id ? (
-          <menu className={styles.menu} onClick={() => setShowPriorityMenu("")}>
+        {showPriorityMenu === todo?._id ? (
+          <menu
+            className={styles.menu}
+            onClick={(e) => {
+              e.stopPropagation();
+              setShowPriorityMenu("");
+            }}
+          >
             <ul>
               {["high", "medium", "low"].map((p, index) => (
                 <li
                   key={p}
-                  onClick={() => {
-                    updateProject(proj?._id, { priority: index + 1 });
+                  onClick={(e) => {
+                    updateTodo(todo?._id, { priority: index + 1 });
                     setReload ? setReload(true) : console.log("gmhh no reload");
+                    setShowPriorityMenu("");
                   }}
                 >
                   {p}
@@ -277,10 +309,10 @@ export default function Project({ proj, setReload }: Props) {
           </div>
         </div>
       </div>
-      {proj === undefined ? (
+      {todo === undefined ? (
         <button
-          onClick={() => {
-            handleAddProject(newProject);
+          onClick={(e) => {
+            handleAddTodo(id ? id?.toString() : "", newTodo);
             setReload ? setReload(true) : console.log("gmhh no reload");
             setName("");
             setDescription("");
@@ -289,15 +321,16 @@ export default function Project({ proj, setReload }: Props) {
             setColor("");
           }}
         >
-          add project
+          add todo
         </button>
       ) : null}
     </div>
   );
 }
-function handleDeleteProject(id: string | undefined) {
+
+function handleDeleteTodo(id: string | undefined) {
   async function fn() {
-    const res = await fetch(`/api/deleteproject/${id}`, {
+    const res = await fetch(`/api/deletetodo/${id}`, {
       headers: {
         "Content-Type": "application/json",
       },
@@ -308,23 +341,10 @@ function handleDeleteProject(id: string | undefined) {
   }
   if (id) fn();
 }
-function handleDeleteTask(id: string | undefined) {
-  async function fn() {
-    const res = await fetch(`/api/deletetask/${id}`, {
-      headers: {
-        "Content-Type": "application/json",
-      },
-      method: "DELETE",
-    });
-
-    console.log(await res.json());
-  }
-  if (id) fn();
-}
-function updateProject(id: string | undefined, updated: ProjectI | undefined) {
+function updateTodo(id: string | undefined, updated: TodoI | undefined) {
   console.log("idated", updated);
   async function fn() {
-    const res = await fetch(`/api/updateproject/${id}`, {
+    const res = await fetch(`/api/updatetodo/${id}`, {
       headers: {
         "Content-Type": "application/json",
       },
@@ -336,18 +356,19 @@ function updateProject(id: string | undefined, updated: ProjectI | undefined) {
   }
   if (id) fn();
 }
-function handleAddProject(newProject: ProjectI | undefined) {
-  console.log("idated", newProject);
+function handleAddTodo(taskId: string, newTodo: TodoI | undefined) {
+  console.log("idated", newTodo);
+  const body = { ...newTodo, task: { id: taskId } };
   async function fn() {
-    const res = await fetch(`/api/addproject`, {
+    const res = await fetch(`/api/addtodo`, {
       headers: {
         "Content-Type": "application/json",
       },
       method: "POST",
-      body: JSON.stringify(newProject),
+      body: JSON.stringify(body),
     });
 
     console.log(await res.json());
   }
-  if (newProject?.name) fn();
+  if (newTodo?.title) fn();
 }

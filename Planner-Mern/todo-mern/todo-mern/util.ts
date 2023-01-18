@@ -1,4 +1,4 @@
-export function formatDate(date: string) {
+export function formatDate(date: string | Date) {
   if (date) {
     const date_obj = new Date(date);
 

@@ -3,8 +3,8 @@ export interface Todo {
   title?: string;
   description?: string;
   color?: string;
-  dueDate?: Date;
-  startDate?: Date;
+  dueDate?: string;
+  startDate?: string;
   priority?: number;
   task?: Task;
   status?: "in progress" | "completed";

@@ -9,13 +9,14 @@ import {
 } from "react-icons/ai";
 import styles from "../../styles/components/explorer/explorer.module.scss";
 import { Ctx } from "../Layout";
+import { Project as ProjectI } from "../../types/types";
 export default function Explorer() {
   const context = useContext(Ctx);
-  const [isExpanded, setIsExpanded] = useState("proj");
+  const [isExpanded, setIsExpanded] = useState("pro");
   const [isExpandedProject, setIsExpandedProject] = useState("");
   const router = useRouter();
   const [activeTask, setActiveTask] = useState("");
-  const { projects } = useProjects();
+  const { projects, setReload, reload } = useProjects();
   console.log(isExpandedProject, "proj exp");
 
   function classnames(item: any) {
@@ -23,6 +24,11 @@ export default function Explorer() {
       ? styles["active-task"] + " " + styles["subitem"]
       : styles["subitem"];
   }
+
+  useEffect(() => {
+    setReload(true);
+    console.log("issgoin");
+  }, [router, setReload]);
   return (
     <>
       <div
@@ -32,57 +38,6 @@ export default function Explorer() {
             : styles["container-light"]
         }
       >
-        {/* <div
-          className={styles["header-light"]}
-          key={"Favorite"}
-          onClick={() => setIsExpanded(isExpanded === "fav" ? "" : "fav")}
-        >
-          Favorites
-          <AiFillCaretDown
-            id={isExpanded === "fav" ? styles["active-arrow"] : undefined}
-          />
-        </div> */}
-        {
-          // isExpanded == "fav"
-          //   ? [1, 2, 3].map((item) => (
-          //       <>
-          //         <div
-          //           className={styles["item-light"]}
-          //           key={item}
-          //           onClick={() =>
-          //             setIsExpandedProject(
-          //               isExpandedProject === `fav${item}` ? "" : `fav${item}`
-          //             )
-          //           }
-          //         >
-          //           Favorite Project {item}
-          //           <AiFillCaretDown
-          //             id={
-          //               isExpandedProject === "fav" + item
-          //                 ? styles["active-arrow"]
-          //                 : undefined
-          //             }
-          //           />
-          //         </div>
-          //         {/* // sublisst */}
-          //         {isExpandedProject === `fav${item}` ? (
-          //           <div>
-          //             {[1, 2, 3, 4, 5].map((item) => (
-          //               <div
-          //                 key={`sub-item-${item}`}
-          //                 className={styles["subitem-light"]}
-          //                 onClick={() => router.push("/task/" + item)}
-          //               >
-          //                 <p>Task {item}</p>
-          //               </div>
-          //             ))}
-          //           </div>
-          //         ) : null}
-          //       </>
-          //     ))
-          //   : null
-        }
-
         <div className={styles["header"]} key={"Projects"}>
           <p onClick={() => setIsExpanded(isExpanded === "pro" ? "" : "pro")}>
             Projects
@@ -95,7 +50,7 @@ export default function Explorer() {
             />
           </div>
         </div>
-        {isExpanded == "pro"
+        {isExpanded === "pro"
           ? projects?.body.projects.map((item: any) => (
               <>
                 <div
@@ -145,18 +100,23 @@ export default function Explorer() {
 
 function useProjects() {
   const [data, setData] = useState<any>();
+  const [reload, setReload] = useState<boolean>(false);
   const [loading, setLoading] = useState(false);
   const [isErr, setIsErr] = useState(false);
 
   async function fetchProjects() {
     const res = await fetch("/api/getprojects");
-    const projects = await res.json();
+    const projects: ProjectI[] = await res.json();
     setData(projects);
   }
 
   useEffect(() => {
-    fetchProjects();
-  }, []);
+    console.log(reload, "reload");
+    if (reload) {
+      fetchProjects();
+      setReload(false);
+    }
+  }, [reload]);
 
-  return { projects: data };
+  return { projects: data, setReload, reload };
 }

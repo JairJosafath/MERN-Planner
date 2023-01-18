@@ -8,10 +8,11 @@ import {
   AiOutlineExclamation,
   AiOutlineMore,
 } from "react-icons/ai";
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Ctx } from "../../components/Layout";
 import AddTodo from "../../components/addTodo";
 import Task from "../../components/Task";
+import { useRouter } from "next/router";
 
 interface Props {
   tasks: TaskI[] | undefined;
@@ -19,6 +20,14 @@ interface Props {
 }
 export default function Project({ tasks, projectname }: Props) {
   const [shownewTask, setShownewTask] = useState(false);
+  const [reload, setReload] = useState(false);
+  const router = useRouter();
+  useEffect(() => {
+    if (reload) {
+      router.replace(router.asPath);
+      setReload(false);
+    }
+  }, [reload, router]);
   return (
     <div className={styles.wrapper}>
       <h1> Project : {projectname ? projectname : ""}</h1>
@@ -32,12 +41,12 @@ export default function Project({ tasks, projectname }: Props) {
       </div>
       {shownewTask ? (
         <div style={{ marginBottom: "30px" }}>
-          <Task />
+          <Task setReload={setReload} />
         </div>
       ) : null}
       <div className={styles.content}>
         {tasks?.map((task) => (
-          <Task key={task._id} task={task} />
+          <Task key={task._id} task={task} setReload={setReload} />
         ))}
       </div>
     </div>

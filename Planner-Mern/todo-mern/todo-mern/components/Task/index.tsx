@@ -7,14 +7,21 @@ import {
   AiOutlineExclamation,
   AiOutlineMore,
 } from "react-icons/ai";
-import { useContext, useEffect, useState } from "react";
+import {
+  useContext,
+  useEffect,
+  useState,
+  Dispatch,
+  SetStateAction,
+} from "react";
 import { Ctx } from "../Layout";
 import { formatDate } from "../../util";
 import { useRouter } from "next/router";
 interface Props {
   task?: TaskI;
+  setReload?: Dispatch<SetStateAction<boolean>>;
 }
-export default function Task({ task }: Props) {
+export default function Task({ task, setReload }: Props) {
   const router = useRouter();
   const { id } = router.query;
   const context = useContext(Ctx);
@@ -38,9 +45,10 @@ export default function Task({ task }: Props) {
     if ((name ? name?.length > 3 : false) && name !== task?.name && task?._id)
       timeout = setTimeout(() => {
         updateTask(task?._id, { name: name });
+        setReload ? setReload(true) : console.log("gmhh no reload");
       }, 1000);
     return () => clearTimeout(timeout);
-  }, [name, task?._id, task?.name]);
+  }, [name, setReload, task?._id, task?.name]);
 
   useEffect(() => {
     let timeout: NodeJS.Timeout;
@@ -51,9 +59,10 @@ export default function Task({ task }: Props) {
     )
       timeout = setTimeout(() => {
         updateTask(task?._id, { description: description });
+        setReload ? setReload(true) : console.log("gmhh no reload");
       }, 1000);
     return () => clearTimeout(timeout);
-  }, [description, task?._id, task?.description]);
+  }, [description, setReload, task?._id, task?.description]);
 
   useEffect(() => {
     if (
@@ -61,11 +70,13 @@ export default function Task({ task }: Props) {
       task?._id
     )
       updateTask(task?._id, { startDate: startDate });
-  }, [startDate, task?._id, task?.startDate]);
+    setReload ? setReload(true) : console.log("gmhh no reload");
+  }, [setReload, startDate, task?._id, task?.startDate]);
   useEffect(() => {
     if (formatDate(task?.dueDate ? task?.dueDate : "") !== dueDate && task?._id)
       updateTask(task?._id, { dueDate: dueDate });
-  }, [dueDate, task?._id, task?.dueDate]);
+    setReload ? setReload(true) : console.log("gmhh no reload");
+  }, [dueDate, setReload, task?._id, task?.dueDate]);
   useEffect(() => {
     if (!task?._id) {
       setNewTask({
@@ -75,8 +86,9 @@ export default function Task({ task }: Props) {
         dueDate: dueDate,
         color: color,
       });
+      setReload ? setReload(true) : console.log("gmhh no reload");
     }
-  }, [color, description, dueDate, name, task?._id, startDate, id]);
+  }, [color, description, dueDate, name, task?._id, startDate, id, setReload]);
 
   return (
     <div
@@ -87,11 +99,11 @@ export default function Task({ task }: Props) {
       onClick={() => {
         showmenu ? setShowMenu("") : null;
         showPriorityMenu ? setShowPriorityMenu("") : null;
-        task?._id ? router.push(`/task/${task?._id}`) : null;
       }}
     >
-      <div className={styles["flex-header"]}>
+      <div className={styles["flex-header"]} onClick={(e) => e.stopPropagation}>
         <input
+          onClick={(e) => e.stopPropagation}
           type={"text"}
           value={name}
           placeholder="task name"
@@ -101,18 +113,19 @@ export default function Task({ task }: Props) {
           }}
         />
         <div>
-          <div
-            className={styles["color-circle"]}
-            onClick={(e) => {
-              e.stopPropagation();
-              showColorMenu === task?._id
-                ? setShowColorMenu("")
-                : setShowColorMenu(task?._id);
-            }}
-            style={{ background: task?.color ? task?.color : "grey" }}
-          />
           {task ? (
             <>
+              {" "}
+              <div
+                className={styles["color-circle"]}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  showColorMenu === task?._id
+                    ? setShowColorMenu("")
+                    : setShowColorMenu(task?._id);
+                }}
+                style={{ background: task?.color ? task?.color : "grey" }}
+              />
               <AiFillExclamationCircle
                 color={
                   task?.priority === 1
@@ -123,7 +136,10 @@ export default function Task({ task }: Props) {
                 }
                 onClick={(e) => {
                   e.stopPropagation();
-                  setShowPriorityMenu(task?._id);
+
+                  showPriorityMenu
+                    ? setShowPriorityMenu("")
+                    : setShowPriorityMenu(task?._id);
                 }}
               />
               <AiFillCheckSquare
@@ -136,42 +152,37 @@ export default function Task({ task }: Props) {
                       ? { status: "completed" }
                       : { status: "in progress" }
                   );
+                  setReload ? setReload(true) : console.log("gmhh no reload");
                 }}
               />
               <AiOutlineMore
                 onClick={(e) => {
                   e.stopPropagation();
-                  setShowMenu(task?._id);
+                  showmenu ? setShowMenu("") : setShowMenu(task?._id);
                 }}
               />
             </>
           ) : null}
         </div>
       </div>
-      {showmenu === task?._id ? (
-        <menu className={styles.menu} onClick={() => setShowMenu("")}>
-          <ul>
-            <li>archive task</li>
-            <li
-              onClick={(e) => {
-                e.stopPropagation();
-                handleDeleteTask(task?._id);
-              }}
-            >
-              delete task
-            </li>
-          </ul>
-        </menu>
-      ) : null}
-      <div>
+
+      <div onClick={(e) => e.stopPropagation}>
         {showmenu === task?._id ? (
           <menu className={styles.menu} onClick={() => setShowMenu("")}>
             <ul>
-              <li>archive task</li>
+              <li
+                onClick={() =>
+                  task?._id ? router.push(`/task/${task?._id}`) : null
+                }
+              >
+                open task
+              </li>
               <li
                 onClick={(e) => {
                   e.stopPropagation();
                   handleDeleteTask(task?._id);
+                  setReload ? setReload(true) : console.log("gmhh no reload");
+                  setShowMenu("");
                 }}
               >
                 delete task
@@ -190,6 +201,7 @@ export default function Task({ task }: Props) {
                     e.stopPropagation();
                     updateTask(task?._id, { color: c });
                     setShowColorMenu("");
+                    setReload ? setReload(true) : console.log("gmhh no reload");
                   }}
                   style={{ background: c }}
                 ></div>
@@ -209,6 +221,9 @@ export default function Task({ task }: Props) {
                       e.stopPropagation();
                       updateTask(task?._id, { color: color });
                       setColor("");
+                      setReload
+                        ? setReload(true)
+                        : console.log("gmhh no reload");
                     }
                     setShowColorMenu("");
                   }}
@@ -242,6 +257,7 @@ export default function Task({ task }: Props) {
                   onClick={(e) => {
                     e.stopPropagation();
                     updateTask(task?._id, { priority: index + 1 });
+                    setReload ? setReload(true) : console.log("gmhh no reload");
                   }}
                 >
                   {p}
@@ -251,11 +267,13 @@ export default function Task({ task }: Props) {
           </menu>
         ) : null}
         <textarea
+          onClick={(e) => e.stopPropagation}
           value={description}
           placeholder={"description"}
           onChange={(e) => {
             e.stopPropagation();
             setDescription(e.target.value);
+            setReload ? setReload(true) : console.log("gmhh no reload");
           }}
         />
         <div className={styles.flex}>
