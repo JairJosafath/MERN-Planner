@@ -4,7 +4,7 @@ const router = express.Router();
 const postProject = require("../controllers/Project/postProject");
 const getProjects = require("../controllers/Project/getProjects");
 const getProject = require("../controllers/Project/getProject");
-const updateProject = require("../controllers/Project/deleteProject");
+const updateProject = require("../controllers/Project/updateProject");
 const deleteProject = require("../controllers/Project/deleteProject");
 
 const postTask = require("../controllers/Task/postTask");

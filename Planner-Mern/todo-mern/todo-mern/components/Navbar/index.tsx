@@ -15,7 +15,9 @@ export default function Navbar({ showSideNav, setShowSideNav }: Props) {
 
   return (
     <>
-      <div className={styles["nav-light"]}>
+      <div
+        className={context?.darkMode ? styles["nav-dark"] : styles["nav-light"]}
+      >
         <div>
           {showSideNav ? (
             <AiOutlineClose onClick={() => setShowSideNav(false)} />
@@ -31,12 +33,12 @@ export default function Navbar({ showSideNav, setShowSideNav }: Props) {
         <div onClick={() => setShowMenu(!showMenu)}>
           <FaUserAlt />
         </div>
+        {/* menu */}
+        <ul className={!showMenu ? styles["hidden"] : styles["list"]}>
+          <li onClick={() => setShowMenu(false)}>Manage Account</li>
+          <li onClick={() => setShowMenu(false)}>Log Out</li>
+        </ul>
       </div>
-      {/* menu */}
-      <ul className={!showMenu ? styles["hidden"] : styles["list"]}>
-        <li onClick={() => setShowMenu(false)}>Manage Account</li>
-        <li onClick={() => setShowMenu(false)}>Log Out</li>
-      </ul>
     </>
   );
 }

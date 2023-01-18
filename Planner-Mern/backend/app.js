@@ -1,6 +1,13 @@
 const express = require("express");
 const PORT = 3001;
+
+const cors = require("cors");
 const app = express();
+app.use(
+  cors({
+    origin: "http://127.0.0.1:4000",
+  })
+);
 const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
 const routes = require("./routes/routes");

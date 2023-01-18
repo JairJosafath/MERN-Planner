@@ -1,110 +1,50 @@
 @use "../../color-palette" as cp;
-
-.sidenav-light {
-  $primary: cp.$indigo-hex;
-  $secondary: cp.$medium-spring-green-hex;
-  $color: cp.$black-hex;
-  $background: cp.$white-hex;
-  $grad: cp.$white-blue-green-gradient;
-  // position: absolute;
+@use "../../mixins";
+$primary: cp.$indigo-hex;
+$secondary: cp.$medium-spring-green-hex;
+$color: cp.$black-hex;
+$background: cp.$white-hex;
+$grad: cp.$white-blue-green-gradient;
+.sidenav {
   flex: 24%;
-  // z-index: -1;
   top: 0;
   min-width: 300px;
   height: calc(100vh - 105px);
-  box-shadow: inset 1px 1px 20px 1px transparentize($color, 0.9);
   margin-top: 20px;
   margin-left: 10px;
   margin-bottom: 20px;
   border-radius: 1rem;
-  transition: flex 200ms ease-in-out, opacity 200ms;
-
-  display: grid;
-  justify-content: center;
-  grid-template-rows: 5% 87%;
   gap: 2%;
   padding-top: 2%;
   svg {
-    font-size: 40px;
+    font-size: 20px;
     cursor: pointer;
-    color: $background;
   }
   svg:hover {
-    font-size: 37px;
-    transition: 400ms;
-    padding: 0;
-    margin: 0;
+    font-size: 20px;
   }
   svg:active {
     transform: scale(0.8);
   }
 }
+
 .sidenav-hidden {
-  $primary: cp.$indigo-hex;
-  $secondary: cp.$medium-spring-green-hex;
-  $color: cp.$black-hex;
-  $background: cp.$white-hex;
-  $grad: cp.$white-blue-green-gradient;
   flex: 0;
   visibility: hidden;
   max-width: 90px;
   top: 0;
   opacity: 0;
-  height: calc(100vh - 105px);
-  box-shadow: inset 1px 1px 20px 1px transparentize($color, 0.9);
-  margin-top: 20px;
-  margin-left: 10px;
-  margin-bottom: 20px;
-  border-radius: 1rem;
-  padding-top: 20px;
+}
 
-  display: grid;
-  justify-content: center;
-  align-content: flex-start;
-  gap: 30px;
-
-  transition: visibility 100ms, width 800ms, opacity 300ms, flex 1s;
-  svg {
-    font-size: 40px;
-    cursor: pointer;
-    opacity: 0;
-  }
-  svg:hover {
-    font-size: 30px;
-    transform-style: preserve-3d;
-    transform: perspective(1000px) translateZ(50px);
-    border: 3px solid black;
-    border-radius: 50%;
-    padding: 0;
-    margin: 0;
-  }
-  svg:active {
-    color: lighten($color: $color, $amount: 30);
-    font-size: 29px;
-  }
-}
-.controls-light {
-  $primary: cp.$indigo-hex;
-  $secondary: cp.$medium-spring-green-hex;
-  $color: cp.$black-hex;
-  $background: cp.$white-hex;
-  $grad: cp.$white-blue-green-gradient;
-  display: flex;
-  justify-content: space-evenly;
-  align-items: center;
-  background-image: $grad;
-  width: 250px;
-  padding: 5px;
-  border-radius: 1rem;
-}
-.controls-light:hover {
-  $primary: cp.$indigo-hex;
-  $secondary: cp.$medium-spring-green-hex;
-  $color: cp.$black-hex;
-  $background: cp.$white-hex;
-  $grad: cp.$white-blue-green-gradient;
-  box-shadow: 0 5px 20px 5px transparentize($color: $color, $amount: 0.8);
-}
 .hidden {
   display: none;
+}
+.sidenav-light {
+  @extend .sidenav;
+  box-shadow: inset 1px 1px 20px 1px transparentize($color, 0.9);
+}
+.sidenav-dark {
+  @extend .sidenav;
+  @include mixins.theme($color, $background);
+  box-shadow: inset 1px 1px 20px 1px transparentize($background, 0.9);
 }

@@ -1,0 +1,163 @@
+@use "../../color-palette" as cp;
+@use "../../mixins";
+$primary: cp.$indigo-hex;
+$secondary: cp.$medium-spring-green-hex;
+$color: cp.$black-hex;
+$background: cp.$white-hex;
+$grad: cp.$white-blue-green-gradient;
+.wrapper {
+  padding: 20px;
+  overflow-y: scroll;
+  max-height: 93vh;
+  input {
+    border: none;
+    border-radius: 0.6rem;
+    padding: 10px;
+    background-color: inherit;
+    color: inherit;
+  }
+  input:hover {
+    border: 1px solid;
+  }
+}
+.wrapper::-webkit-scrollbar {
+  display: none;
+}
+.controls {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  max-width: 600px;
+  margin: 0 auto;
+  svg {
+    margin-right: 30px;
+    font-size: 40px;
+    color: green;
+
+    cursor: pointer;
+  }
+  svg:hover {
+    color: red;
+  }
+  svg:active {
+    transform: scale(0.8);
+  }
+}
+.content {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+
+  @media (width<1000px) {
+    grid-template-columns: 1fr;
+  }
+}
+
+.project {
+  padding: 5px;
+  border-radius: 1rem;
+  position: relative;
+  max-width: 400px;
+  max-height: 400px;
+  svg {
+    font-size: 20px;
+    cursor: pointer;
+  }
+  .flex-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    svg {
+      margin: 0 5px;
+    }
+    svg:hover {
+      transform: scale(1.3);
+      font-weight: bolder;
+    }
+  }
+  textarea {
+    border: none;
+    border-radius: 0.6rem;
+    padding: 5px;
+    background-color: inherit;
+    color: inherit;
+    max-width: 350px;
+    max-height: 100px;
+  }
+  textarea:hover {
+    border: 1px solid;
+  }
+
+  .color-circle {
+    display: inline-flex;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    margin: 0 5px;
+    cursor: pointer;
+  }
+  .color-circle:hover {
+    transform: scale(1.3);
+  }
+
+  .rotated {
+    transform: rotate(45deg);
+  }
+
+  .menu {
+    position: absolute;
+    right: 10px;
+    top: 30px;
+    border-radius: 0.5rem;
+    padding: 0;
+    ul {
+      padding-left: 0;
+      list-style: none;
+
+      li {
+        box-shadow: none;
+        border-radius: 0;
+        margin: 0;
+        padding: 8px;
+      }
+    }
+  }
+  .flex {
+    display: flex;
+    justify-content: space-between;
+    svg {
+      margin: 0 5px;
+    }
+    svg:hover {
+      transform: scale(1.1);
+      font-weight: bolder;
+    }
+  }
+}
+
+.project-light {
+  @extend .project;
+  box-shadow: 0px 1px 10px 1px transparentize($color, 0.9);
+  .menu {
+    box-shadow: 0px 1px 10px 1px transparentize($color, 0.9);
+    li:hover {
+      @include mixins.theme($color, $background);
+    }
+  }
+}
+.project-light:hover {
+  box-shadow: 0px 1px 1px 1px transparentize($color, 0.9);
+}
+.project-dark {
+  @extend .project;
+  box-shadow: 0px 1px 10px 1px transparentize($background, 0.9);
+  .menu {
+    box-shadow: 0px 1px 10px 1px transparentize($background, 0.87);
+    li:hover {
+      @include mixins.theme($background, $color);
+    }
+  }
+}
+.project-dark:hover {
+  box-shadow: 0px 1px 1px 1px transparentize($background, 0.95);
+}

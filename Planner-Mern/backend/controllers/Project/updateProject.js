@@ -6,7 +6,7 @@ module.exports = function (req, res) {
     try {
       const updated = Project.findByIdAndUpdate(req.params.id, { ...req.body });
       const result = await updated.exec();
-      response = { statusCode: 200, body: { result } };
+      response = { statusCode: 200, body: result };
     } catch (e) {
       response = { statusCode: 400, body: { message: e.message } };
     }

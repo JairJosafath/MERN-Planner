@@ -1,23 +1,18 @@
 @use "../../color-palette" as cp;
-
-// color: $color;
-// background: $background;
-.nav-light {
-  $primary: cp.$indigo-hex;
-  $secondary: cp.$medium-spring-green-hex;
-  $color: cp.$black-hex;
-  $background: cp.$white-hex;
-  // colors
-  background: darken($color: $background, $amount: 1px);
-  box-shadow: 0px 1px 1px 1px transparentize($color, 0.95);
-
-  //layout
+@use "../../mixins";
+$primary: cp.$indigo-hex;
+$secondary: cp.$medium-spring-green-hex;
+$color: cp.$black-hex;
+$background: cp.$white-hex;
+$grad: cp.$white-blue-green-gradient;
+.nav {
   display: flex;
   align-items: center;
   gap: 20px;
 
   padding: 0 20px;
-  height: 45px;
+  min-height: 30px;
+  height: 5vh;
   svg {
     flex: 2;
   }
@@ -26,14 +21,37 @@
     text-align: center;
   }
 }
+.nav-light {
+  @extend .nav;
+  background: darken($color: $background, $amount: 1px);
+  box-shadow: 0px 1px 1px 1px transparentize($color, 0.95);
+  .list {
+    box-shadow: 0px 1px 1px 1px transparentize($color, 0.9);
+    @include mixins.theme(lighten($background, 10), $color);
+    li:hover {
+      @include mixins.theme($color, lighten($background, 10));
+    }
+  }
+}
+
+.hidden {
+  display: none;
+}
+
+.nav-dark {
+  @extend .nav;
+  @include mixins.theme($color, $background);
+  box-shadow: 0px 1px 1px 1px transparentize($background, 0.95);
+  .list {
+    box-shadow: 0px 1px 1px 1px transparentize($background, 0.9);
+    @include mixins.theme(lighten($color, 10), $background);
+    li:hover {
+      @include mixins.theme($background, lighten($color, 10));
+    }
+  }
+}
 
 .list {
-  $primary: cp.$indigo-hex;
-  $secondary: cp.$medium-spring-green-hex;
-  $color: cp.$black-hex;
-  $background: cp.$white-hex;
-  box-shadow: 0px 1px 9px 1px transparentize($color, 0.8);
-
   //layout
   position: absolute;
   top: 38px;
@@ -47,6 +65,7 @@
   li {
     width: 100%;
     padding: 10px 0;
+    cursor: pointer;
   }
   li:first-child {
     border-top-left-radius: 0.5rem;
@@ -56,14 +75,4 @@
     border-bottom-left-radius: 0.5rem;
     border-bottom-right-radius: 0.5rem;
   }
-  li:hover {
-    color: $background;
-    background: $color;
-  }
-}
-.hidden {
-  display: none;
-}
-
-.dark {
 }

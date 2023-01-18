@@ -14,6 +14,10 @@ const task = new mongoose.Schema(
       required: false,
       type: String,
     },
+    status: {
+      required: false,
+      type: String,
+    },
     dueDate: {
       required: false,
       type: Date,
@@ -48,6 +52,14 @@ const projectSchema = new mongoose.Schema(
     dueDate: {
       required: false,
       type: Date,
+    },
+    status: {
+      required: false,
+      type: String,
+    },
+    color: {
+      required: false,
+      type: String,
     },
     startDate: {
       required: false,
