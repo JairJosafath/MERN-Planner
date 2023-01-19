@@ -1,104 +1,30 @@
 import type { AppProps } from "next/app";
-import Button from "../components/Button";
+import Input from "../components/Input";
+import { AiOutlineSearch } from "react-icons/ai";
+import TextArea from "../components/TextArea";
+import { useEffect, useState } from "react";
+import Dropdown from "../components/Dropdown";
 export default function App({ Component, pageProps }: AppProps) {
+  const [loading, setloading] = useState(false);
+  const [error, seterror] = useState(true);
+  const [success, setsuccess] = useState(false);
+
   return (
     <>
       <Component {...pageProps} />
+      {/* <Input uploaded={success} error={error} loading={loading} />
       <div>
-        <Button
-          onClick={() => console.log("clicked")}
-          variant="primary"
-          size="xs"
-        >
-          Primary
-        </Button>
-        <Button
-          onClick={() => console.log("clicked")}
-          variant="outline"
-          size="xs"
-        >
-          Outline
-        </Button>
-        <Button onClick={() => console.log("clicked")} variant="text" size="xs">
-          Text
-        </Button>
-      </div>
-      <div>
-        <Button
-          onClick={() => console.log("clicked")}
-          variant="primary"
-          size="sm"
-        >
-          Primary
-        </Button>
-        <Button
-          onClick={() => console.log("clicked")}
-          variant="outline"
-          size="sm"
-        >
-          Outline
-        </Button>
-        <Button onClick={() => console.log("clicked")} variant="text" size="sm">
-          Text
-        </Button>
-      </div>
-      <div>
-        <Button
-          onClick={() => console.log("clicked")}
-          variant="primary"
-          size="md"
-        >
-          Primary
-        </Button>
-        <Button
-          onClick={() => console.log("clicked")}
-          variant="outline"
-          size="md"
-        >
-          Outline
-        </Button>
-        <Button onClick={() => console.log("clicked")} variant="text" size="md">
-          Text
-        </Button>
-      </div>
-      <div>
-        <Button
-          onClick={() => console.log("clicked")}
-          variant="primary"
-          size="lg"
-        >
-          Primary
-        </Button>
-        <Button
-          onClick={() => console.log("clicked")}
-          variant="outline"
-          size="lg"
-        >
-          Outline
-        </Button>
-        <Button onClick={() => console.log("clicked")} variant="text" size="lg">
-          Text
-        </Button>
-      </div>
-      <div>
-        <Button
-          onClick={() => console.log("clicked")}
-          variant="primary"
-          size="xl"
-        >
-          Primary
-        </Button>
-        <Button
-          onClick={() => console.log("clicked")}
-          variant="outline"
-          size="xl"
-        >
-          Outline
-        </Button>
-        <Button onClick={() => console.log("clicked")} variant="text" size="xl">
-          Text
-        </Button>
-      </div>
+        <TextArea uploaded={success} error={error} loading={loading} />
+      </div> */}
+      <Dropdown
+        items={[
+          { label: "item one", onClick: () => console.log("item one") },
+          { label: "item two", onClick: () => console.log("item two") },
+          { label: "item three", onClick: () => console.log("item three") },
+        ]}
+      >
+        Choose Item
+      </Dropdown>
     </>
   );
 }

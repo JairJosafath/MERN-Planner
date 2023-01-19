@@ -1,0 +1,50 @@
+@use "../../styles/layout.module" as l;
+@use "../../styles/mixins";
+@use "../Button/button.styles.module";
+.wrapper {
+  display: inline-block;
+  margin: 2px;
+}
+.content {
+  div {
+    display: flex;
+    align-items: center;
+    button {
+      min-width: fit-content;
+      white-space: nowrap;
+      padding-left: 10px;
+      border-top-right-radius: 0;
+      border-bottom-right-radius: 0;
+    }
+    div {
+      padding: 0 5px;
+      border-radius: 0.5rem;
+      border-top-left-radius: 0;
+      border-bottom-left-radius: 0;
+    }
+  }
+
+  ul {
+    list-style: none;
+  }
+}
+.primary {
+}
+.outline {
+}
+.text {
+}
+
+.xs {
+}
+
+.sm {
+}
+
+.md {
+}
+
+.lg {
+}
+.xl {
+}

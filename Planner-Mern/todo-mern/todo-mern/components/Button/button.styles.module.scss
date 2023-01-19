@@ -5,23 +5,36 @@
   margin: 2px;
 }
 .content {
+  div {
+    border-radius: 0.5rem;
+    cursor: pointer;
+  }
   button {
     border-radius: 0.5rem;
     border: none;
     background-color: inherit;
     cursor: pointer;
     transition: 200ms;
+    display: flex;
+    gap: 1px;
+    align-items: center;
+    justify-content: center;
   }
 }
 .primary {
-  button {
+  button,
+  div {
     background: l.$primary;
     color: l.$background;
   }
-  button:hover {
+  button:hover,
+  div:hover,
+  svg:hover {
     background: lighten($color: l.$primary, $amount: 10);
   }
-  button:active {
+  button:active,
+  div:active,
+  svg:active {
     background: l.$primary;
   }
 }
@@ -66,7 +79,8 @@
 }
 
 .md {
-  button {
+  button,
+  div {
     @include mixins.size(md);
   }
 }

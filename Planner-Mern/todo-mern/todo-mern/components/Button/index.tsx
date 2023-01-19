@@ -1,13 +1,5 @@
 import styles from "./button.styles.module.scss";
-import {
-  useRef,
-  useState,
-  useEffect,
-  RefObject,
-  MouseEvent,
-  Dispatch,
-  SetStateAction,
-} from "react";
+import { useRef, useState, useEffect, RefObject, MouseEvent } from "react";
 
 interface Props extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   variant?: "primary" | "outline" | "text";
