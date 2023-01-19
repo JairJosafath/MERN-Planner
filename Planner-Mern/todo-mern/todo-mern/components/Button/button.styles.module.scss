@@ -1,0 +1,83 @@
+@use "../../styles/layout.module" as l;
+@use "../../styles/mixins";
+.wrapper {
+  display: inline-block;
+  margin: 2px;
+}
+.content {
+  button {
+    border-radius: 0.5rem;
+    border: none;
+    background-color: inherit;
+    cursor: pointer;
+    transition: 200ms;
+  }
+}
+.primary {
+  button {
+    background: l.$primary;
+    color: l.$background;
+  }
+  button:hover {
+    background: lighten($color: l.$primary, $amount: 10);
+  }
+  button:active {
+    background: l.$primary;
+  }
+}
+.outline {
+  button {
+    border: l.$primary 1px solid;
+    color: l.$primary;
+    border-radius: 0.5rem;
+    font-weight: bold;
+  }
+  button:hover {
+    background: transparentize($color: l.$primary, $amount: 0.95);
+  }
+  button:active {
+    background: l.$background;
+  }
+}
+.text {
+  button {
+    background-color: l.$background;
+    color: l.$primary;
+    font-weight: bold;
+  }
+  button:hover {
+    background: transparentize($color: l.$primary, $amount: 0.95);
+  }
+  button:active {
+    background: l.$background;
+  }
+}
+
+.xs {
+  button {
+    @include mixins.size(xs);
+  }
+}
+
+.sm {
+  button {
+    @include mixins.size(sm);
+  }
+}
+
+.md {
+  button {
+    @include mixins.size(md);
+  }
+}
+
+.lg {
+  button {
+    @include mixins.size(lg);
+  }
+}
+.xl {
+  button {
+    @include mixins.size(xl);
+  }
+}
