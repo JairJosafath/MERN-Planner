@@ -1,0 +1,79 @@
+@use "../../styles/layout.module" as l;
+@use "../../styles/mixins";
+.wrapper {
+  display: inline-block;
+  margin: 2px;
+}
+.content {
+  position: relative;
+}
+.expanded {
+  ul {
+    position: absolute;
+    list-style: none;
+    margin: 10px;
+    right: 0;
+    width: fit-content;
+    white-space: nowrap;
+    z-index: 1;
+    height: fit-content;
+    border-radius: 0.5rem;
+    padding-left: 0;
+    li:last-child:hover,
+    li:last-child {
+      border-bottom-left-radius: 0.5rem;
+      border-bottom-right-radius: 0.5rem;
+    }
+    li:first-child:hover,
+    li:first-child {
+      border-top-left-radius: 0.5rem;
+      border-top-right-radius: 0.5rem;
+    }
+    li {
+      padding: 10px;
+      cursor: pointer;
+    }
+  }
+}
+.collapsed {
+  ul {
+    display: none;
+  }
+}
+.primary {
+  svg {
+    background: transparentize(l.$primary, 1);
+    color: l.$background;
+  }
+  ul {
+    background: l.$primary;
+    color: l.$background;
+    li:hover {
+      background: lighten($color: l.$primary, $amount: 10);
+    }
+    li:active {
+      background: l.$primary;
+    }
+  }
+}
+.outline {
+  ul {
+    background: inherit;
+    color: inherit;
+    backdrop-filter: blur(80px);
+    li {
+      border: l.$primary 1px solid;
+      border-bottom: none;
+    }
+    li:hover {
+      background: l.$primary;
+      color: l.$background;
+    }
+    li:active {
+      background: l.$primary;
+    }
+    li:last-child {
+      border-bottom: l.$primary 1px solid;
+    }
+  }
+}

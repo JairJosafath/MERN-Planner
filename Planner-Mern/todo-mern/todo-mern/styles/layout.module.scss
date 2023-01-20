@@ -5,6 +5,12 @@ $secondary: cp.$medium-spring-green-hex;
 $color: cp.$black-hex;
 $background: cp.$white-hex;
 $grad: cp.$white-blue-green-gradient;
+//
+$primary-dark: cp.$indigo-hex;
+$secondary-dark: cp.$medium-spring-green-hex;
+$color-dark: cp.$white-hex;
+$background-dark: cp.$black-hex;
+$grad-dark: cp.$white-blue-green-gradient;
 
 .body {
   .main-content {
@@ -99,9 +105,11 @@ $grad: cp.$white-blue-green-gradient;
 .light {
   @extend .body;
   @include mixins.theme($background, $color);
+  height: 100vh;
 }
 
 .dark {
   @extend .body;
   @include mixins.theme($color, $background);
+  height: 100vh;
 }

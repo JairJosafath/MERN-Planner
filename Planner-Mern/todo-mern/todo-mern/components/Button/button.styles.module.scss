@@ -19,6 +19,8 @@
     gap: 1px;
     align-items: center;
     justify-content: center;
+    white-space: nowrap;
+    min-width: fit-content;
   }
 }
 .primary {
@@ -79,8 +81,7 @@
 }
 
 .md {
-  button,
-  div {
+  button {
     @include mixins.size(md);
   }
 }

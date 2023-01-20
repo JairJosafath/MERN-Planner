@@ -21,7 +21,7 @@ export default function Input({
   const classnames = `${styles.content}
   ${loading ? styles.loading : ""}
         ${uploaded ? styles.success : ""}
-        ${error ? styles.error : ""}
+        ${error ? styles.error : ""} ${styles["input-light"]}
   `;
   return (
     <div className={styles.wrapper}>

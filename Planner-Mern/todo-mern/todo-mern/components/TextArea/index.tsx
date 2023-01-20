@@ -25,7 +25,7 @@ export default function TextArea({
 }: Props) {
   const classnames = `${styles.content} ${loading ? styles.loading : ""} ${
     uploaded ? styles.success : ""
-  } ${error ? styles.error : ""}`;
+  } ${error ? styles.error : ""} ${styles["textarea-light"]}`;
   return (
     <div className={styles.wrapper}>
       <div className={classnames}>
