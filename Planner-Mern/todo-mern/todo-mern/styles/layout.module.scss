@@ -13,17 +13,20 @@ $background-dark: cp.$black-hex;
 $grad-dark: cp.$white-blue-green-gradient;
 
 .body {
-  .main-content {
-    display: flex;
-  }
   main {
-    flex: 76%;
-    height: 95vh;
+    height: 97vh;
+    max-width: 100%;
+    overflow-y: scroll;
+    overflow-x: hidden;
   }
-  .main-full {
-    flex: 90%;
-    height: 95vh;
-  }
+  // // main {
+  // //   flex: 76%;
+  // //   height: 95vh;
+  // }
+  // .main-full {
+  //   flex: 90%;
+  //   height: 95vh;
+  // }
   .sidenav {
     // position: absolute;
     flex: 24%;
@@ -105,11 +108,9 @@ $grad-dark: cp.$white-blue-green-gradient;
 .light {
   @extend .body;
   @include mixins.theme($background, $color);
-  height: 100vh;
 }
 
 .dark {
   @extend .body;
   @include mixins.theme($color, $background);
-  height: 100vh;
 }

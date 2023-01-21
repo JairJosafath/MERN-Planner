@@ -4,10 +4,10 @@
   display: inline-block;
   margin: 2px;
 }
-.content {
+.menu-content {
   position: relative;
 }
-.expanded {
+.menu-expanded {
   ul {
     position: absolute;
     list-style: none;
@@ -35,12 +35,12 @@
     }
   }
 }
-.collapsed {
+.menu-collapsed {
   ul {
     display: none;
   }
 }
-.primary {
+.menu-primary {
   svg {
     background: transparentize(l.$primary, 1);
     color: l.$background;
@@ -56,7 +56,7 @@
     }
   }
 }
-.outline {
+.menu-outline {
   ul {
     background: inherit;
     color: inherit;

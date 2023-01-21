@@ -4,6 +4,8 @@ import {
   AiOutlineClose,
 } from "react-icons/ai";
 import styles from "./input.styles.module.scss";
+import { useContext } from "react";
+import { Darkmode } from "../../pages/_app";
 interface Props extends React.InputHTMLAttributes<HTMLInputElement> {
   uploaded?: boolean;
   loading?: boolean;
@@ -18,10 +20,13 @@ export default function Input({
   error = false,
   ...props
 }: Props) {
+  const ctx = useContext(Darkmode);
   const classnames = `${styles.content}
   ${loading ? styles.loading : ""}
         ${uploaded ? styles.success : ""}
-        ${error ? styles.error : ""} ${styles["input-light"]}
+        ${error ? styles.error : ""} ${
+    ctx?.darkmode ? styles["input-dark"] : styles["input-light"]
+  }
   `;
   return (
     <div className={styles.wrapper}>

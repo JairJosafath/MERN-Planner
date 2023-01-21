@@ -1,3 +1,5 @@
+import { Dispatch, SetStateAction } from "react";
+
 export function formatDate(date: string | Date) {
   if (date) {
     const date_obj = new Date(date);
@@ -14,4 +16,22 @@ export function formatDate(date: string | Date) {
   } else {
     return "";
   }
+}
+export function onChangeDelay(
+  value: string,
+  setState: Dispatch<
+    SetStateAction<
+      | {
+          key: "name" | "description" | "status" | "color" | "priority";
+          value: string | number;
+        }
+      | undefined
+    >
+  >,
+  key: string
+) {
+  const timeout = setTimeout(() => {
+    setState({ key: "name", value: value });
+  }, 1000);
+  return () => clearTimeout(timeout);
 }
