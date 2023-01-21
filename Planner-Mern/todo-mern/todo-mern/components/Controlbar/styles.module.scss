@@ -1,0 +1,52 @@
+.wrapper {
+}
+
+.controlbar-content {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  padding: 0 10px;
+  // max-width: 600px;
+  margin: 0 auto;
+  div:first-child {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    position: relative;
+    svg {
+      position: absolute;
+      right: 10px;
+    }
+  }
+  div:last-child {
+    svg {
+      background: green;
+      border-radius: 50%;
+      padding: 10px;
+      color: white;
+      margin-right: 40px;
+      margin-bottom: 30px;
+      cursor: pointer;
+
+      transform: scale(1.5);
+    }
+    svg:hover {
+      filter: brightness(1.1);
+    }
+    svg:active {
+      transform: scale(1.4);
+    }
+  }
+  @media (width<760px) {
+    div:last-child {
+      svg {
+        position: fixed;
+        bottom: 0;
+        right: 0;
+        z-index: 100;
+        margin: 40px;
+        box-shadow: 0 2px 4px transparentize($color: black, $amount: 0.4);
+      }
+    }
+  }
+}

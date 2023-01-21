@@ -56,15 +56,15 @@
 }
 .text {
   button {
-    background-color: l.$background;
-    color: l.$primary;
+    background-color: inherit;
+    color: inherit;
     font-weight: bold;
   }
   button:hover {
     background: transparentize($color: l.$primary, $amount: 0.95);
   }
   button:active {
-    background: l.$background;
+    background: transparentize($color: l.$primary, $amount: 0.9);
   }
 }
 

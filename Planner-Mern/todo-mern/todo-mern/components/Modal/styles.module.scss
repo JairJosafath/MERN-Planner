@@ -1,0 +1,55 @@
+@use "../../styles/layout.module" as l;
+.wrapper {
+  height: 100vh;
+  width: 100vw;
+  backdrop-filter: blur(1px) brightness(0.8);
+  position: fixed;
+  top: 0;
+  left: 0;
+  display: grid;
+  justify-content: center;
+  align-items: center;
+}
+.modal-content {
+  position: relative;
+  border-radius: 0.5rem;
+  box-shadow: 0 1px 20px transparentize($color: black, $amount: 0.5);
+  display: grid;
+  align-content: space-between;
+}
+
+.modal-title {
+  display: flex;
+  align-items: center;
+  background-color: l.$primary;
+  color: l.$color-dark;
+  border-top-left-radius: 0.5rem;
+  border-top-right-radius: 0.5rem;
+  svg {
+    flex: 10%;
+    cursor: pointer;
+  }
+  svg:hover {
+    transform: scale(1.2);
+  }
+  p {
+    flex: 90%;
+    text-align: center;
+  }
+}
+.modal-main {
+  padding: 20px;
+  text-align: center;
+}
+.modal-footer {
+  display: flex;
+  padding: 10px;
+  align-items: center;
+  justify-content: space-around;
+}
+.modal-dark {
+  background: l.$background-dark;
+}
+.modal-light {
+  background: l.$background;
+}

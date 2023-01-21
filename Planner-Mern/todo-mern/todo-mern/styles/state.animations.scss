@@ -1,6 +1,7 @@
 .loading {
   svg {
     animation: loading 600ms linear infinite;
+    color: inherit;
   }
 }
 .error {
@@ -15,12 +16,13 @@
     animation: success 10s ease;
     color: green;
     opacity: 0;
+    border-radius: 50%;
   }
 }
 @keyframes success {
   from {
     background: green;
-    color: white;
+    color: green;
     padding: 0.5%;
     opacity: 1;
   }

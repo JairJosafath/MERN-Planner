@@ -69,3 +69,19 @@
 .header-dark:hover {
   box-shadow: 0px 2px 10px darken($color: l.$color, $amount: 6);
 }
+.noshadow,
+.noshadow:hover {
+  box-shadow: none;
+
+  .header,
+  .header:hover,
+  div {
+    box-shadow: none;
+    input {
+      border: 1px solid;
+    }
+    textarea {
+      border: 1px solid;
+    }
+  }
+}

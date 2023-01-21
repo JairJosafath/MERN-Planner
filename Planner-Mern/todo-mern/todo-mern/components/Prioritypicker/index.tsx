@@ -7,7 +7,14 @@ interface Props {
   setPriority: Dispatch<
     SetStateAction<
       | {
-          key: "color" | "name" | "description" | "status" | "priority";
+          key:
+            | "color"
+            | "name"
+            | "description"
+            | "status"
+            | "priority"
+            | "startDate"
+            | "dueDate";
           value: string | number;
           body: object;
         }

@@ -6,8 +6,12 @@ import styles from "../styles/layouts.module.scss";
 import Header from "../components/Card.Header";
 import Input from "../components/Input";
 import Project from "../components/Project";
-import { useEffect, useState } from "react";
+import { useCallback, useContext, useEffect, useState } from "react";
 import { useRouter } from "next/router";
+import Datepicker from "../components/Datepicker";
+import Modal from "../components/Modal";
+import Controlbar from "../components/Controlbar";
+import { ModalCTX } from "./_app";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -17,12 +21,14 @@ interface Props {
 
 export default function Home({ projects }: Props) {
   const [reload, setReload] = useState(false);
+  const ctx = useContext(ModalCTX);
   const router = useRouter();
-
+  const [add, setAdd] = useState(false);
   useEffect(() => {
     if (reload) router.replace(router.pathname);
     setReload(false); // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [reload]);
+
   return (
     <>
       <Head>
@@ -31,6 +37,7 @@ export default function Home({ projects }: Props) {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
+      <Controlbar action={"addProject"} setReload={setReload} />
       <div className={styles.grid}>
         {projects.map((project: ProjectInterface) => (
           <Project key={project._id} project={project} setReload={setReload} />

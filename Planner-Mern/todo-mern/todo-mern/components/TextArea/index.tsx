@@ -4,6 +4,8 @@ import {
   AiOutlineLoading,
   AiOutlineClose,
 } from "react-icons/ai";
+import { useContext } from "react";
+import { Darkmode } from "../../pages/_app";
 interface Props extends React.TextareaHTMLAttributes<HTMLTextAreaElement> {
   // inputsize?:"xs" | "sm" | "md" | "lg" | "xl";
   rows?: number;
@@ -23,9 +25,12 @@ export default function TextArea({
   cols = 40,
   ...props
 }: Props) {
+  const ctx = useContext(Darkmode);
   const classnames = `${styles.content} ${loading ? styles.loading : ""} ${
     uploaded ? styles.success : ""
-  } ${error ? styles.error : ""} ${styles["textarea-light"]}`;
+  } ${error ? styles.error : ""} ${
+    ctx?.darkmode ? styles["textarea-dark"] : styles["textarea-light"]
+  }`;
   return (
     <div className={styles.wrapper}>
       <div className={classnames}>
