@@ -12,23 +12,31 @@ import Datepicker from "../components/Datepicker";
 import Modal from "../components/Modal";
 import Controlbar from "../components/Controlbar";
 import { ModalCTX } from "./_app";
+import { useFecth } from "../hooks/useFetch";
 
 const inter = Inter({ subsets: ["latin"] });
 
-interface Props {
-  projects: ProjectInterface[];
-}
-
-export default function Home({ projects }: Props) {
+export default function Home() {
+  const { data, setReq } = useFecth();
   const [reload, setReload] = useState(false);
-  const ctx = useContext(ModalCTX);
-  const router = useRouter();
-  const [add, setAdd] = useState(false);
+  const [projects, setProjects] = useState(data?.projects);
   useEffect(() => {
-    if (reload) router.replace(router.pathname);
-    setReload(false); // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [reload]);
-
+    if (reload) {
+      setReq({
+        url: `/api/getprojects`,
+      });
+      setReload(false);
+    }
+  }, [reload, setReq]);
+  useEffect(() => {
+    setReq({
+      url: `/api/getprojects`,
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+  useEffect(() => {
+    if (data) setProjects(data?.projects);
+  }, [data]);
   return (
     <>
       <Head>
@@ -39,18 +47,10 @@ export default function Home({ projects }: Props) {
       </Head>
       <Controlbar action={"addproject"} setReload={setReload} />
       <div className={styles.grid}>
-        {projects.map((project: ProjectInterface) => (
+        {projects?.map((project: ProjectInterface) => (
           <Project key={project._id} project={project} setReload={setReload} />
         ))}
       </div>
     </>
   );
-}
-
-export async function getStaticProps() {
-  const res = await fetch(`https://nextplanner.onrender.com/api/getprojects`);
-
-  const data = await res.json().catch((e) => console.error(e));
-  const projects: ProjectInterface[] = data.body.projects;
-  return { props: { projects } };
 }

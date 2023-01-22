@@ -14,7 +14,7 @@ export default function Task() {
   const { id } = router.query;
   const { data, setReq } = useFecth();
   const [reload, setReload] = useState(false);
-  const task: TaskInterface = data?.task;
+  const [todos, setTodos] = useState(data?.task?.todos);
   useEffect(() => {
     if (reload) {
       setReq({
@@ -29,15 +29,18 @@ export default function Task() {
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+  useEffect(() => {
+    if (data?.task) setTodos(data?.task?.todos);
+  }, [data?.task]);
 
   return (
     <>
       <div>
-        <h1> {task?.name}</h1>
+        <h1> {data?.task?.name}</h1>
       </div>
       <Controlbar action={"addtodo"} setReload={setReload} />
       <div className={styles.grid}>
-        {task?.todos?.map((todo: TodoInterface) => (
+        {todos?.map((todo: TodoInterface) => (
           <Todo key={todo._id} todo={todo} setReload={setReload} />
         ))}
       </div>
