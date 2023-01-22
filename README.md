@@ -16,5 +16,9 @@ To list all projects: /api/getprojects
 get one project: /api/project/id
 same counts for tasks and todos!
 
+TODO:
+- add calendar view
+- store keys in .env
+
 Regards,
 Jair!!
