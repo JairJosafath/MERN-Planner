@@ -48,7 +48,7 @@ export default function Home({ projects }: Props) {
 }
 
 export async function getStaticProps() {
-  const res = await fetch(`/api/getprojects`);
+  const res = await fetch(`https://nextplanner.onrender.com/api/getprojects`);
 
   const data = await res.json().catch((e) => console.error(e));
   const projects: ProjectInterface[] = data.body.projects;
