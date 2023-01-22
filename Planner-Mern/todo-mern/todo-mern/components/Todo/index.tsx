@@ -15,9 +15,9 @@ import {
   AiOutlineLoading,
   AiOutlineMore,
 } from "react-icons/ai";
-import { useProject } from "../../hooks/useProject";
+import { useTodo } from "../../hooks/useTodo";
 import { ModalCTX } from "../../pages/_app";
-import { Project as ProjectInterface } from "../../types/types";
+import { Todo as TodoInterface } from "../../types/types";
 import { formatDate, onChangeDelay } from "../../util";
 import Card from "../Card";
 import Header from "../Card.Header";
@@ -31,36 +31,39 @@ import Prioritypicker from "../Prioritypicker";
 import TextArea from "../TextArea";
 
 interface Props {
-  project?: ProjectInterface;
+  todo?: TodoInterface;
   setReload?: Dispatch<SetStateAction<boolean>>;
 }
 
-export default function Project({ project, setReload }: Props) {
+export default function Todo({ todo, setReload }: Props) {
   const ctx = useContext(ModalCTX);
-  const [temp, setTemp] = useState<ProjectInterface>({});
+  const [temp, setTemp] = useState<TodoInterface>({});
   const [showMore, setShowMore] = useState(false);
   const router = useRouter();
   const {
     setUpdateArgs,
     updateArgs,
-    setAddProject,
-    setDeleteProject,
+    setAddTodo,
+    setDeleteTodo,
     loading,
     setError,
     error,
-    name,
+    title,
     setName,
     description,
     setDescription,
     data,
     success,
-  } = useProject(project);
+  } = useTodo(todo);
   useEffect(() => {
-    if (!project?._id)
+    if (!todo?._id)
       ctx?.setModal({
         ...ctx.modal,
         action() {
-          setAddProject(temp);
+          setAddTodo({
+            ...temp,
+            task: { id: router.query.id?.toString() },
+          });
         },
       });
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -68,16 +71,16 @@ export default function Project({ project, setReload }: Props) {
     temp.color,
     temp.description,
     temp.dueDate,
-    temp.name,
+    temp.title,
     temp.priority,
     temp.startDate,
     temp.status,
   ]);
   useEffect(() => {
-    if (!project?._id && updateArgs?.body && setTemp) {
+    if (!todo?._id && updateArgs?.body && setTemp) {
       setTemp({ ...temp, ...updateArgs?.body });
     }
-  }, [project?._id, temp, updateArgs?.body]);
+  }, [todo?._id, temp, updateArgs?.body]);
 
   useEffect(() => {
     if (data && setReload) {
@@ -86,49 +89,49 @@ export default function Project({ project, setReload }: Props) {
   }, [data, setReload]);
 
   useEffect(() => {
-    if (temp.name && success) {
+    if (temp.title && success) {
       setTemp({});
       ctx?.setModal({ ...ctx.modal, action: undefined, visible: false });
     }
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [temp.name, success]);
+  }, [temp.title, success]);
 
   return (
     <Card
-      shadow={project ? true : false}
+      shadow={todo ? true : false}
       onClick={() => {
-        if (project?._id) router.push(`/project/${project?._id}`);
+        if (todo?._id) router.push(`/todo/${todo?._id}`);
       }}
     >
       <Header>
         <Input
-          value={name}
-          placeholder={"add a name for this project"}
+          value={title}
+          placeholder={"add a title for this todo"}
           onChange={(e) => {
-            if (project) setName(e.target.value);
+            if (todo) setName(e.target.value);
             else if (setTemp) {
-              setTemp({ ...temp, name: e.target.value });
+              setTemp({ ...temp, title: e.target.value });
             }
           }}
           onClick={(e) => e.stopPropagation()}
         />
         <Colorpicker
-          color={project?._id ? project?.color : temp?.color}
+          color={todo?._id ? todo?.color : temp?.color}
           setColor={setUpdateArgs}
         />
         <Prioritypicker
-          priority={project?._id ? project?.priority : temp?.priority}
+          priority={todo?._id ? todo?.priority : temp?.priority}
           setPriority={setUpdateArgs}
         />
-        {project?._id ? (
+        {todo?._id ? (
           <>
             <AiFillCheckSquare
               style={{
-                color: project?._id
-                  ? project?.status === "completed"
+                color: todo?._id
+                  ? todo?.status === "completed"
                     ? "green"
-                    : project?.status === "in progress"
+                    : todo?.status === "in progress"
                     ? "lightgray"
                     : "grey"
                   : temp?.status === "completed"
@@ -142,12 +145,12 @@ export default function Project({ project, setReload }: Props) {
                 setUpdateArgs({
                   key: "status",
                   value:
-                    project?.status === "in progress"
+                    todo?.status === "in progress"
                       ? "completed"
                       : "in progress",
                   body: {
-                    status: project?._id
-                      ? project?.status === "in progress"
+                    status: todo?._id
+                      ? todo?.status === "in progress"
                         ? "completed"
                         : "in progress"
                       : temp?.status === "in progress"
@@ -168,19 +171,19 @@ export default function Project({ project, setReload }: Props) {
               show={showMore}
               items={[
                 {
-                  label: "open project",
+                  label: "open todo",
                   onClick() {
-                    router.push(`/project/${project?._id}`);
+                    router.push(`/todo/${todo?._id}`);
                   },
                 },
                 {
-                  label: "delete project",
+                  label: "delete todo",
                   onClick: () => {
                     ctx?.setModal({
-                      title: "Delete Project",
+                      title: "Delete Todo",
                       visible: true,
                       action() {
-                        setDeleteProject(project?._id);
+                        setDeleteTodo(todo?._id);
                         ctx?.setModal({
                           ...ctx.modal,
                           action: undefined,
@@ -190,7 +193,7 @@ export default function Project({ project, setReload }: Props) {
                       children: (
                         <>
                           <p>Are you sure you want to delete </p>
-                          <h3>{project?.name}</h3>
+                          <h3>{todo?.title}</h3>
                         </>
                       ),
                     });
@@ -204,9 +207,9 @@ export default function Project({ project, setReload }: Props) {
       </Header>
       <TextArea
         value={description}
-        placeholder={"add a description for this project"}
+        placeholder={"add a description for this todo"}
         onChange={(e) => {
-          if (project) setDescription(e.target.value);
+          if (todo) setDescription(e.target.value);
           else if (setTemp) {
             setTemp({ ...temp, description: e.target.value });
           }
@@ -218,9 +221,9 @@ export default function Project({ project, setReload }: Props) {
         label={"Start Date"}
         setDate={setUpdateArgs}
         date={formatDate(
-          project?._id
-            ? project?.startDate
-              ? project?.startDate
+          todo?._id
+            ? todo?.startDate
+              ? todo?.startDate
               : ""
             : temp?.startDate
             ? temp?.startDate
@@ -231,9 +234,9 @@ export default function Project({ project, setReload }: Props) {
         label={"End Date"}
         setDate={setUpdateArgs}
         date={formatDate(
-          project?._id
-            ? project?.dueDate
-              ? project?.dueDate
+          todo?._id
+            ? todo?.dueDate
+              ? todo?.dueDate
               : ""
             : temp?.dueDate
             ? temp?.dueDate

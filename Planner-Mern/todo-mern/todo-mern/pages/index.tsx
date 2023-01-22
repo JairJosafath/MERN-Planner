@@ -37,7 +37,7 @@ export default function Home({ projects }: Props) {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <Controlbar action={"addProject"} setReload={setReload} />
+      <Controlbar action={"addproject"} setReload={setReload} />
       <div className={styles.grid}>
         {projects.map((project: ProjectInterface) => (
           <Project key={project._id} project={project} setReload={setReload} />

@@ -23,7 +23,7 @@ export default function Menu({
   } ${!show ? styles["menu-collapsed"] : ""}`;
 
   return (
-    <div className={styles.wrapper}>
+    <div className={styles.wrapper} onClick={(e) => e.stopPropagation()}>
       <div className={className}>
         <ul>
           {items.map(({ label, onClick }, index) => (

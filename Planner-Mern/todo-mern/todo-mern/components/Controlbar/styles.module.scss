@@ -6,13 +6,11 @@
   justify-content: flex-end;
   align-items: center;
   padding: 0 10px;
-  // max-width: 600px;
   margin: 0 auto;
   div:first-child {
     display: flex;
     align-items: center;
     gap: 10px;
-    position: relative;
     svg {
       position: absolute;
       right: 10px;
@@ -27,7 +25,6 @@
       margin-right: 40px;
       margin-bottom: 30px;
       cursor: pointer;
-
       transform: scale(1.5);
     }
     svg:hover {

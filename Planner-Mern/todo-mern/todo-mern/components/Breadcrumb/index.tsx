@@ -24,7 +24,7 @@ export default function Breadcrumb() {
             <Button variant="text" onClick={() => route.push("/")}>
               Home
             </Button>
-            <p>Project</p>
+            /<p>Project</p>
           </>
         ) : null}
         {route.pathname.includes("/task/") ? (
@@ -32,10 +32,11 @@ export default function Breadcrumb() {
             <Button variant="text" onClick={() => route.push("/")}>
               Home
             </Button>
+            /
             <Button variant="text" onClick={() => route.back()}>
               Project
             </Button>
-            <p>Task</p>
+            /<p>Task</p>
           </>
         ) : null}
       </div>

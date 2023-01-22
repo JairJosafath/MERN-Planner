@@ -8,6 +8,8 @@ import { ModalCTX, ModalInterface } from "../../pages/_app";
 import Input from "../Input";
 import Modal from "../Modal";
 import Project from "../Project";
+import Task from "../Task";
+import Todo from "../Todo";
 import styles from "./styles.module.scss";
 
 interface Props {
@@ -26,13 +28,35 @@ export default function Controlbar({ action, setReload }: Props) {
         </div> */}
         <div>
           <AiOutlinePlus
-            onClick={() =>
-              ctx?.setModal({
-                title: "add Project",
-                visible: true,
-                children: <Project setReload={setReload} />,
-              })
-            }
+            onClick={() => {
+              switch (action) {
+                case "addproject":
+                  ctx?.setModal({
+                    title: "add Project",
+                    visible: true,
+                    children: <Project setReload={setReload} />,
+                  });
+                  break;
+
+                case "addtask":
+                  ctx?.setModal({
+                    title: "add Task",
+                    visible: true,
+                    children: <Task setReload={setReload} />,
+                  });
+                  break;
+                case "addtodo":
+                  ctx?.setModal({
+                    title: "add Todo",
+                    visible: true,
+                    children: <Todo setReload={setReload} />,
+                  });
+                  break;
+
+                default:
+                  break;
+              }
+            }}
           />
         </div>
       </div>

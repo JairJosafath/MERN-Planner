@@ -1,5 +1,6 @@
 export interface Todo {
   _id?: string;
+  id?: string;
   title?: string;
   description?: string;
   color?: string;
@@ -11,6 +12,7 @@ export interface Todo {
 }
 export interface Task {
   _id?: string;
+  id?: string;
   name?: string;
   description?: string;
   color?: string;
@@ -23,6 +25,7 @@ export interface Task {
 }
 export interface Project {
   _id?: string;
+  id?: string;
   name?: string;
   description?: string;
   color?: string;

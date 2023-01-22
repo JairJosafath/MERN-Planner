@@ -15,9 +15,9 @@ import {
   AiOutlineLoading,
   AiOutlineMore,
 } from "react-icons/ai";
-import { useProject } from "../../hooks/useProject";
+import { useTask } from "../../hooks/useTask";
 import { ModalCTX } from "../../pages/_app";
-import { Project as ProjectInterface } from "../../types/types";
+import { Task as TaskInterface } from "../../types/types";
 import { formatDate, onChangeDelay } from "../../util";
 import Card from "../Card";
 import Header from "../Card.Header";
@@ -31,20 +31,20 @@ import Prioritypicker from "../Prioritypicker";
 import TextArea from "../TextArea";
 
 interface Props {
-  project?: ProjectInterface;
+  task?: TaskInterface;
   setReload?: Dispatch<SetStateAction<boolean>>;
 }
 
-export default function Project({ project, setReload }: Props) {
+export default function Task({ task, setReload }: Props) {
   const ctx = useContext(ModalCTX);
-  const [temp, setTemp] = useState<ProjectInterface>({});
+  const [temp, setTemp] = useState<TaskInterface>({});
   const [showMore, setShowMore] = useState(false);
   const router = useRouter();
   const {
     setUpdateArgs,
     updateArgs,
-    setAddProject,
-    setDeleteProject,
+    setAddTask,
+    setDeleteTask,
     loading,
     setError,
     error,
@@ -54,13 +54,16 @@ export default function Project({ project, setReload }: Props) {
     setDescription,
     data,
     success,
-  } = useProject(project);
+  } = useTask(task);
   useEffect(() => {
-    if (!project?._id)
+    if (!task?._id)
       ctx?.setModal({
         ...ctx.modal,
         action() {
-          setAddProject(temp);
+          setAddTask({
+            ...temp,
+            project: { id: router.query.id?.toString() },
+          });
         },
       });
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -74,10 +77,10 @@ export default function Project({ project, setReload }: Props) {
     temp.status,
   ]);
   useEffect(() => {
-    if (!project?._id && updateArgs?.body && setTemp) {
+    if (!task?._id && updateArgs?.body && setTemp) {
       setTemp({ ...temp, ...updateArgs?.body });
     }
-  }, [project?._id, temp, updateArgs?.body]);
+  }, [task?._id, temp, updateArgs?.body]);
 
   useEffect(() => {
     if (data && setReload) {
@@ -96,17 +99,17 @@ export default function Project({ project, setReload }: Props) {
 
   return (
     <Card
-      shadow={project ? true : false}
+      shadow={task ? true : false}
       onClick={() => {
-        if (project?._id) router.push(`/project/${project?._id}`);
+        if (task?._id) router.push(`/task/${task?._id}`);
       }}
     >
       <Header>
         <Input
           value={name}
-          placeholder={"add a name for this project"}
+          placeholder={"add a name for this task"}
           onChange={(e) => {
-            if (project) setName(e.target.value);
+            if (task) setName(e.target.value);
             else if (setTemp) {
               setTemp({ ...temp, name: e.target.value });
             }
@@ -114,21 +117,21 @@ export default function Project({ project, setReload }: Props) {
           onClick={(e) => e.stopPropagation()}
         />
         <Colorpicker
-          color={project?._id ? project?.color : temp?.color}
+          color={task?._id ? task?.color : temp?.color}
           setColor={setUpdateArgs}
         />
         <Prioritypicker
-          priority={project?._id ? project?.priority : temp?.priority}
+          priority={task?._id ? task?.priority : temp?.priority}
           setPriority={setUpdateArgs}
         />
-        {project?._id ? (
+        {task?._id ? (
           <>
             <AiFillCheckSquare
               style={{
-                color: project?._id
-                  ? project?.status === "completed"
+                color: task?._id
+                  ? task?.status === "completed"
                     ? "green"
-                    : project?.status === "in progress"
+                    : task?.status === "in progress"
                     ? "lightgray"
                     : "grey"
                   : temp?.status === "completed"
@@ -142,12 +145,12 @@ export default function Project({ project, setReload }: Props) {
                 setUpdateArgs({
                   key: "status",
                   value:
-                    project?.status === "in progress"
+                    task?.status === "in progress"
                       ? "completed"
                       : "in progress",
                   body: {
-                    status: project?._id
-                      ? project?.status === "in progress"
+                    status: task?._id
+                      ? task?.status === "in progress"
                         ? "completed"
                         : "in progress"
                       : temp?.status === "in progress"
@@ -168,19 +171,19 @@ export default function Project({ project, setReload }: Props) {
               show={showMore}
               items={[
                 {
-                  label: "open project",
+                  label: "open task",
                   onClick() {
-                    router.push(`/project/${project?._id}`);
+                    router.push(`/task/${task?._id}`);
                   },
                 },
                 {
-                  label: "delete project",
+                  label: "delete task",
                   onClick: () => {
                     ctx?.setModal({
-                      title: "Delete Project",
+                      title: "Delete Task",
                       visible: true,
                       action() {
-                        setDeleteProject(project?._id);
+                        setDeleteTask(task?._id);
                         ctx?.setModal({
                           ...ctx.modal,
                           action: undefined,
@@ -190,7 +193,7 @@ export default function Project({ project, setReload }: Props) {
                       children: (
                         <>
                           <p>Are you sure you want to delete </p>
-                          <h3>{project?.name}</h3>
+                          <h3>{task?.name}</h3>
                         </>
                       ),
                     });
@@ -204,9 +207,9 @@ export default function Project({ project, setReload }: Props) {
       </Header>
       <TextArea
         value={description}
-        placeholder={"add a description for this project"}
+        placeholder={"add a description for this task"}
         onChange={(e) => {
-          if (project) setDescription(e.target.value);
+          if (task) setDescription(e.target.value);
           else if (setTemp) {
             setTemp({ ...temp, description: e.target.value });
           }
@@ -218,9 +221,9 @@ export default function Project({ project, setReload }: Props) {
         label={"Start Date"}
         setDate={setUpdateArgs}
         date={formatDate(
-          project?._id
-            ? project?.startDate
-              ? project?.startDate
+          task?._id
+            ? task?.startDate
+              ? task?.startDate
               : ""
             : temp?.startDate
             ? temp?.startDate
@@ -231,9 +234,9 @@ export default function Project({ project, setReload }: Props) {
         label={"End Date"}
         setDate={setUpdateArgs}
         date={formatDate(
-          project?._id
-            ? project?.dueDate
-              ? project?.dueDate
+          task?._id
+            ? task?.dueDate
+              ? task?.dueDate
               : ""
             : temp?.dueDate
             ? temp?.dueDate

@@ -7,7 +7,7 @@ interface Props {
     SetStateAction<
       | {
           key:
-            | "name"
+            | "title"
             | "description"
             | "status"
             | "color"
@@ -23,7 +23,7 @@ interface Props {
 }
 export default function Datepicker({ label, setDate, date }: Props) {
   return (
-    <div className={styles.wrapper}>
+    <div className={styles.wrapper} onClick={(e) => e.stopPropagation()}>
       <div className={styles.content}>
         <label>{label}</label>
         <input

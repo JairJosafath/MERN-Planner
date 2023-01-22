@@ -9,7 +9,7 @@ interface Props {
       | {
           key:
             | "color"
-            | "name"
+            | "title"
             | "description"
             | "status"
             | "priority"
@@ -52,7 +52,10 @@ export default function Prioritypicker({ priority, setPriority }: Props) {
   return (
     <>
       <AiOutlineExclamation
-        onClick={() => setShow(!show)}
+        onClick={(e) => {
+          e.stopPropagation();
+          setShow(!show);
+        }}
         style={{
           color: priority === 1 ? "red" : priority === 2 ? "orange" : "grey",
         }}

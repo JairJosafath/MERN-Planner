@@ -11,7 +11,7 @@ interface Props {
       | {
           key:
             | "color"
-            | "name"
+            | "title"
             | "description"
             | "status"
             | "priority"
@@ -30,7 +30,7 @@ export default function Colorpicker({ color, setColor }: Props) {
   const [customColor, setCustomColor] = useState("");
   return (
     <>
-      <div className={styles.wrapper}>
+      <div className={styles.wrapper} onClick={(e) => e.stopPropagation()}>
         <div
           className={styles.circle}
           style={{ background: color }}

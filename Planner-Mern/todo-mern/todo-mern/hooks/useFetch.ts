@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 
 export function useFecth() {
-  const [data, setData] = useState();
+  const [data, setData] = useState<any>();
   const [error, setError] = useState(false);
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
@@ -36,6 +36,10 @@ export function useFecth() {
     }
 
     fetchData();
+    return () => {
+      setData(undefined);
+      setReq(undefined);
+    };
   }, [req?.url, req?.body]);
 
   useEffect(() => (data ? console.log(data, "data") : undefined), [data]);
