@@ -11,6 +11,7 @@ interface Props {
       | {
           key:
             | "color"
+            | "name"
             | "title"
             | "description"
             | "status"

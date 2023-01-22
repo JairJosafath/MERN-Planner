@@ -5,6 +5,7 @@ import { useFecth } from "./useFetch";
 export function useTask(task: Task | undefined) {
   const [updateArgs, setUpdateArgs] = useState<{
     key:
+      | "title"
       | "name"
       | "description"
       | "status"

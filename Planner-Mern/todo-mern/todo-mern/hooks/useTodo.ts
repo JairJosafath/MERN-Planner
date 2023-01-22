@@ -11,6 +11,7 @@ export function useTodo(todo: Todo | undefined) {
       | "color"
       | "priority"
       | "startDate"
+      | "name"
       | "dueDate";
     value: string | number;
     body: object;

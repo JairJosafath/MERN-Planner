@@ -2,6 +2,7 @@ export interface Todo {
   _id?: string;
   id?: string;
   title?: string;
+  name?: string;
   description?: string;
   color?: string;
   dueDate?: string;
@@ -14,6 +15,7 @@ export interface Task {
   _id?: string;
   id?: string;
   name?: string;
+  title?: string;
   description?: string;
   color?: string;
   dueDate?: string;
@@ -26,6 +28,7 @@ export interface Task {
 export interface Project {
   _id?: string;
   id?: string;
+  title?: string;
   name?: string;
   description?: string;
   color?: string;

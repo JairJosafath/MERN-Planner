@@ -8,6 +8,7 @@ interface Props {
       | {
           key:
             | "title"
+            | "name"
             | "description"
             | "status"
             | "color"
