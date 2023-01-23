@@ -4,10 +4,10 @@ const app = express();
 const mongoose = require("mongoose");
 const routes = require("./routes/routes");
 mongoose.set("strictQuery", false);
-// mongoose.connect(
-//   "mongodb+srv://todo-mern:ZYzKpBiM3gus3ryJ@cluster0.awmex.mongodb.net/?retryWrites=true&w=majority"
-// );
-mongoose.connect("mongodb://127.0.0.1:27017/todo-mern");
+mongoose.connect(
+  "mongodb+srv://todo-mern:ZYzKpBiM3gus3ryJ@cluster0.awmex.mongodb.net/?retryWrites=true&w=majority"
+);
+// mongoose.connect("mongodb://127.0.0.1:27017/todo-mern");
 const database = mongoose.connection.once("open", () =>
   console.log("connected to db")
 );
