@@ -8,7 +8,7 @@ videos:
 
 ## [app overview](https://youtu.be/H6Ff0-ZlMGE)
 
-## [app -dev overview](https://youtu.be/tpUUoc834o0)
+## [app -dev overview](https://youtu.be/qwsbSQcKWBg)
 
 ## Front-end:
 
