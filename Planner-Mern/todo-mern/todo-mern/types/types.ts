@@ -1,4 +1,9 @@
-export interface Todo {
+export interface Entity {
+  dueDate?: string;
+  startDate?: string;
+}
+
+export interface Todo extends Entity {
   _id?: string;
   id?: string;
   title?: string;
@@ -11,7 +16,7 @@ export interface Todo {
   task?: Task;
   status?: "in progress" | "completed";
 }
-export interface Task {
+export interface Task extends Entity {
   _id?: string;
   id?: string;
   name?: string;
@@ -25,7 +30,7 @@ export interface Task {
   todos?: Todo[];
   status?: "in progress" | "completed";
 }
-export interface Project {
+export interface Project extends Entity {
   _id?: string;
   id?: string;
   title?: string;

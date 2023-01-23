@@ -1,22 +1,23 @@
 import styles from "./day.styles.module.scss";
-import { Project, Task, Todo } from "../../types/types";
+import { Entity, Project, Task, Todo } from "../../types/types";
 import { useRouter } from "next/router";
 
 interface Props extends React.HTMLAttributes<HTMLDivElement> {
   date: Date;
   active: boolean;
-  entities: Project[] | Task[] | Todo[] | undefined;
+  entities: Entity[] | undefined;
   type: string;
 }
 export default function Day({ date, active, entities, type, ...props }: Props) {
   const router = useRouter();
-  const activeProjects: Project[] | Task[] | Todo[] = entities?.filter(
-    (entity: Project | Task | Todo) =>
-      new Date(entity?.startDate ? entity?.startDate : "").getTime() <=
-        date.getTime() &&
-      date.getTime() <
-        new Date(entity?.dueDate ? entity?.dueDate : "").getTime()
-  );
+  const activeProjects: Project[] | Task[] | Todo[] | undefined =
+    entities?.filter(
+      (entity: Project | Task | Todo) =>
+        new Date(entity?.startDate ? entity?.startDate : "").getTime() <=
+          date.getTime() &&
+        date.getTime() <
+          new Date(entity?.dueDate ? entity?.dueDate : "").getTime()
+    );
   return (
     <div {...props}>
       <div className={styles["day-wrapper"]}>

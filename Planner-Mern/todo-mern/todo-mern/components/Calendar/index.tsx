@@ -1,13 +1,18 @@
 import { useEffect, useState } from "react";
 import { AiOutlineArrowLeft, AiOutlineArrowRight } from "react-icons/ai";
 import { useFecth } from "../../hooks/useFetch";
-import { Project as ProjectInterface, Task, Todo } from "../../types/types";
+import {
+  Entity,
+  Project as ProjectInterface,
+  Task,
+  Todo,
+} from "../../types/types";
 import { months } from "../../util";
 import Day from "../Calendar.Day";
 import styles from "./c.styles.module.scss";
 
 interface Props {
-  entities: (ProjectInterface | Task | Todo)[] | undefined;
+  entities: Entity[] | undefined;
   type: string;
 }
 export default function Calendar({ entities, type }: Props) {
