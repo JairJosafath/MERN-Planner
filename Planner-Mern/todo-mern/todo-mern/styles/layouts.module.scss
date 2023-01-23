@@ -18,14 +18,30 @@
   grid-template-columns: 1fr;
 }
 
-.loading {
-  width: 100vh;
-  display: grid;
-  justify-content: center;
+.loadingini {
+  width: 100%;
+  animation: blink 5s infinite ease;
+  .loading {
+    display: grid;
+    justify-content: center;
 
-  svg {
-    font-size: 133px;
-    margin: 30px;
-    animation-duration: 1.3s;
+    svg {
+      font-size: 100px;
+      margin: 30px;
+      animation-duration: 1.3s;
+    }
+  }
+}
+@keyframes blink {
+  0% {
+    opacity: 0.5;
+  }
+
+  50% {
+    opacity: 0.7;
+  }
+
+  100% {
+    opacity: 1;
   }
 }

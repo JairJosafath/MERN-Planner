@@ -6,6 +6,7 @@ interface Props extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   variant?: "primary" | "outline";
   size?: "xs" | "sm" | "md" | "lg" | "xl";
   items: { label: string; onClick: () => void }[];
+  selected: string;
   /**
    * allows user to control collapse state from outside clicks
    */
@@ -17,10 +18,10 @@ export default function Dropdown({
   variant = "primary",
   size = "md",
   collapse = false,
+  selected = items[0].label,
   ...props
 }: Props) {
   const [expanded, setExpanded] = useState(false);
-  const [selected, setSelected] = useState(items[0].label);
   const className = `${styles.content} ${styles[variant]} ${styles[size]} ${
     expanded && !collapse ? styles.expanded : ""
   } ${!expanded || collapse ? styles.collapsed : ""}`;
@@ -30,7 +31,7 @@ export default function Dropdown({
       <div className={className}>
         <div onClick={() => setExpanded(!expanded)}>
           <button {...props}>{selected}</button>
-          <AiOutlineDown />
+          <AiOutlineDown id={styles.drop} />
         </div>
 
         <ul className={`${expanded ? styles.expanded : ""}`}>
@@ -39,7 +40,6 @@ export default function Dropdown({
               key={index}
               onClick={() => {
                 onClick();
-                setSelected(label);
                 setExpanded(false);
               }}
             >

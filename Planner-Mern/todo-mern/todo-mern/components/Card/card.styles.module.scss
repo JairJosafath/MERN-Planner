@@ -85,3 +85,24 @@
     }
   }
 }
+
+@media (width<760px) {
+  .content {
+    padding: 0;
+    height: 300px;
+    width: 100%;
+    border-radius: none;
+    transition: none;
+
+    textarea {
+      width: 100%;
+      // margin: 0 auto;
+      font-size: smaller;
+    }
+  }
+  .header {
+    svg {
+      display: none;
+    }
+  }
+}

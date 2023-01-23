@@ -17,7 +17,6 @@
     max-width: 700px;
     margin: 0 auto;
     div {
-      display: block;
       text-align: center;
       h4,
       h3 {
@@ -30,20 +29,13 @@
   }
 }
 
-.calendar-header-days {
+.calendar-header-days,
+.calendar-main {
   display: grid;
   grid-template-columns: repeat(7, 1fr);
   max-width: 80%;
   margin: 0 auto;
   padding: 10px 0;
-}
-
-.calendar-main {
-  display: grid;
-  grid-template-columns: repeat(7, 1fr);
-  max-width: 80%;
-  margin: 20px auto;
-  grid-row: auto;
 }
 
 .day {
@@ -68,4 +60,14 @@
 .today {
   background: l.$primary;
   color: white;
+}
+
+@media (width<760px) {
+  .calendar-header-days {
+    div {
+      font-size: smaller;
+    }
+  }
+  .calendar-main {
+  }
 }

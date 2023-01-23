@@ -50,3 +50,11 @@ export const months = (year: number) => [
   { label: "November", days: 30 },
   { label: "December", days: 31 },
 ];
+
+export const years = (year: number) => {
+  let years: number[] = [];
+  for (let i = year - 5; i < year + 5; i++) {
+    years.push(i);
+  }
+  return years;
+};

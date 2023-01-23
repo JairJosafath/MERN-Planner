@@ -7,8 +7,10 @@ import {
   Task,
   Todo,
 } from "../../types/types";
-import { months } from "../../util";
+import { months, years } from "../../util";
+import Button from "../Button";
 import Day from "../Calendar.Day";
+import Dropdown from "../Dropdown";
 import styles from "./c.styles.module.scss";
 
 interface Props {
@@ -21,6 +23,30 @@ export default function Calendar({ entities, type }: Props) {
   const [currentYear, setCurrentYear] = useState(currentDate.getFullYear());
   const [start, setStart] = useState(currentDate.getDay());
   const allMonths = months(currentYear);
+  const yearItems = () => {
+    let temp: { label: string; onClick: () => void }[] = [];
+    years(currentYear).map((year: number) =>
+      temp.push({
+        label: year.toString(),
+        onClick() {
+          setCurrentYear(year);
+        },
+      })
+    );
+    return temp;
+  };
+  const monthItems = () => {
+    let temp: { label: string; onClick: () => void }[] = [];
+    for (let i = 0; i < 12; i++)
+      temp.push({
+        label: allMonths[i].label,
+        onClick() {
+          setCurrentMonth(i);
+        },
+      });
+
+    return temp;
+  };
   const days = [
     { label: "Sunday" },
     { label: "Monday" },
@@ -60,8 +86,19 @@ export default function Calendar({ entities, type }: Props) {
               }}
             />
             <div>
-              <h4>{currentYear}</h4>
-              <h3>{allMonths[currentMonth]?.label}</h3>
+              <div>
+                <Dropdown
+                  variant="outline"
+                  items={yearItems()}
+                  selected={currentYear.toString()}
+                />
+              </div>
+
+              <Dropdown
+                variant="outline"
+                items={monthItems()}
+                selected={allMonths[currentMonth].label}
+              />
             </div>
 
             <AiOutlineArrowRight
@@ -77,7 +114,9 @@ export default function Calendar({ entities, type }: Props) {
           </div>
           <div className={styles["calendar-header-days"]}>
             {days.map(({ label }) => (
-              <div key={label}>{label}</div>
+              <div key={label}>
+                {window.innerWidth < 760 ? label.slice(0, 3) : label}
+              </div>
             ))}
           </div>
           <div className={styles["calendar-main"] + " " + styles["cal-body"]}>

@@ -53,3 +53,15 @@
 .modal-light {
   background: l.$background;
 }
+
+@media (width<760px) {
+  .modal-content,
+  .modal-title,
+  .modal-footer,
+  .modal-main {
+    width: 300px;
+    textarea {
+      margin-left: -40px;
+    }
+  }
+}

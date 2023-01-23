@@ -56,10 +56,12 @@ export default function Home() {
         setMode={setMode}
       />
 
-      {loading && !data ? (
-        <div className={styles.loading}>
-          <AiOutlineLoading />
-          <h3>Loading NextPlanner</h3>
+      {loading && !data?.projects ? (
+        <div className={styles.loadingini}>
+          <div className={styles.loading}>
+            <AiOutlineLoading />
+            <h3>Loading NextPlanner</h3>
+          </div>
         </div>
       ) : null}
       {mode === "card" ? (

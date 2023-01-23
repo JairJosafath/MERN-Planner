@@ -87,16 +87,16 @@
 .outline {
   svg {
     background: transparentize(l.$primary, 1);
-    color: l.$primary;
   }
   div {
-    border: l.$primary 1px solid;
+    border: 1px solid;
   }
   div:hover {
     background: transparentize($color: l.$primary, $amount: 0.95);
   }
   button {
     border: none;
+    color: inherit;
   }
   ul {
     background: l.$primary;
@@ -124,4 +124,7 @@
       border-bottom: l.$primary 1px solid;
     }
   }
+}
+#drop {
+  font-size: medium;
 }
