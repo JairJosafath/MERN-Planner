@@ -3,6 +3,7 @@ import { Inter } from "@next/font/google";
 import { Project as ProjectInterface } from "../types/types";
 import Card from "../components/Card";
 import styles from "../styles/layouts.module.scss";
+
 import Header from "../components/Card.Header";
 import Input from "../components/Input";
 import Project from "../components/Project";
@@ -13,13 +14,16 @@ import Modal from "../components/Modal";
 import Controlbar from "../components/Controlbar";
 import { ModalCTX } from "./_app";
 import { useFecth } from "../hooks/useFetch";
+import Calendar from "../components/Calendar";
+import { AiOutlineLoading } from "react-icons/ai";
 
 const inter = Inter({ subsets: ["latin"] });
 
 export default function Home() {
-  const { data, setReq } = useFecth();
+  const { data, setReq, loading } = useFecth();
   const [reload, setReload] = useState(false);
-  const [projects, setProjects] = useState(data?.projects);
+  const [projects, setProjects] = useState<ProjectInterface[]>(data?.projects);
+  const [mode, setMode] = useState("card");
   useEffect(() => {
     if (reload) {
       setReq({
@@ -45,12 +49,39 @@ export default function Home() {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <Controlbar action={"addproject"} setReload={setReload} />
-      <div className={styles.grid}>
-        {projects?.map((project: ProjectInterface) => (
-          <Project key={project._id} project={project} setReload={setReload} />
-        ))}
-      </div>
+      <Controlbar
+        action={"addproject"}
+        setReload={setReload}
+        mode={mode}
+        setMode={setMode}
+      />
+
+      {loading && !data ? (
+        <div className={styles.loading}>
+          <AiOutlineLoading />
+          <h3>Loading NextPlanner</h3>
+        </div>
+      ) : null}
+      {mode === "card" ? (
+        <>
+          <div className={styles.grid}>
+            {projects?.map((project: ProjectInterface) => (
+              <Project
+                key={project._id}
+                project={project}
+                setReload={setReload}
+              />
+            ))}
+          </div>
+        </>
+      ) : null}
+      {mode === "calendar" ? (
+        <>
+          <div className={styles.containercal}>
+            <Calendar entities={projects} type={"project"} />
+          </div>
+        </>
+      ) : null}
     </>
   );
 }

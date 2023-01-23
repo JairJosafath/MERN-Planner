@@ -98,12 +98,7 @@ export default function Todo({ todo, setReload }: Props) {
   }, [temp.title, success]);
 
   return (
-    <Card
-      shadow={todo ? true : false}
-      onClick={() => {
-        if (todo?._id) router.push(`/todo/${todo?._id}`);
-      }}
-    >
+    <Card shadow={todo ? true : false}>
       <Header>
         <Input
           value={title}
@@ -170,12 +165,12 @@ export default function Todo({ todo, setReload }: Props) {
               variant="outline"
               show={showMore}
               items={[
-                {
-                  label: "open todo",
-                  onClick() {
-                    router.push(`/todo/${todo?._id}`);
-                  },
-                },
+                // {
+                //   label: "open todo",
+                //   onClick() {
+                //     router.push(`/todo/${todo?._id}`);
+                //   },
+                // },
                 {
                   label: "delete todo",
                   onClick: () => {

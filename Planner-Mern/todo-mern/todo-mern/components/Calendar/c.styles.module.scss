@@ -1,5 +1,8 @@
 @use "../../styles/layout.module" as l;
 .calendar-wrapper {
+  margin: 10px;
+  margin-top: 30px;
+  // padding-bottom: 300px;
 }
 
 .calendar-content {
@@ -31,7 +34,8 @@
   display: grid;
   grid-template-columns: repeat(7, 1fr);
   max-width: 80%;
-  margin: 20px auto;
+  margin: 0 auto;
+  padding: 10px 0;
 }
 
 .calendar-main {
@@ -39,7 +43,7 @@
   grid-template-columns: repeat(7, 1fr);
   max-width: 80%;
   margin: 20px auto;
-  grid-row: 6;
+  grid-row: auto;
 }
 
 .day {

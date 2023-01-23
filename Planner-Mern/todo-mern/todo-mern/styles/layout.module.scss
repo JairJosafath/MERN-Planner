@@ -15,7 +15,11 @@ $grad-dark: cp.$white-blue-green-gradient;
 .body {
   main {
     min-height: calc(100vh - 40px);
+    height: fit-content;
     max-width: 100%;
+    h1 {
+      text-align: center;
+    }
   }
   // // main {
   // //   flex: 76%;
@@ -31,10 +35,8 @@ $grad-dark: cp.$white-blue-green-gradient;
     // z-index: -1;
     top: 0;
     min-width: 300px;
-    height: calc(100vh - 85px);
-    margin-top: 20px;
+    height: 100vh;
     margin-left: 10px;
-    margin-bottom: 20px;
     border-radius: 1rem;
     transition: flex 200ms ease-in-out, opacity 200ms;
 

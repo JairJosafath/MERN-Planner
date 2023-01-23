@@ -1,16 +1,20 @@
 import { useEffect, useState } from "react";
 import { AiOutlineArrowLeft, AiOutlineArrowRight } from "react-icons/ai";
 import { useFecth } from "../../hooks/useFetch";
-import { Project as ProjectInterface } from "../../types/types";
+import { Project as ProjectInterface, Task, Todo } from "../../types/types";
 import { months } from "../../util";
 import Day from "../Calendar.Day";
 import styles from "./c.styles.module.scss";
-export default function Calendar() {
+
+interface Props {
+  entities: (ProjectInterface | Task | Todo)[] | undefined;
+  type: string;
+}
+export default function Calendar({ entities, type }: Props) {
   const currentDate = new Date();
   const [currentMonth, setCurrentMonth] = useState(currentDate.getMonth());
   const [currentYear, setCurrentYear] = useState(currentDate.getFullYear());
   const [start, setStart] = useState(currentDate.getDay());
-  const [temp, setTemp] = useState<ProjectInterface>();
   const allMonths = months(currentYear);
   const days = [
     { label: "Sunday" },
@@ -30,13 +34,6 @@ export default function Calendar() {
     }
     return days;
   };
-
-  const { data, setReq, loading } = useFecth();
-  useEffect(() => {
-    setReq({ url: "/api/getprojects" });
-  }, []);
-
-  useEffect(() => setTemp(data?.projects[0]), [data]);
 
   useEffect(() => {
     setStart(new Date(currentYear, currentMonth, 1).getDay());
@@ -83,7 +80,8 @@ export default function Calendar() {
               return (
                 <Day
                   key={day}
-                  entities={data?.projects}
+                  entities={entities}
+                  type={type}
                   active={
                     start <= day && day < start + allMonths[currentMonth].days
                   }

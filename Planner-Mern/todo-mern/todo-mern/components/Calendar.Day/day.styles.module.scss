@@ -19,5 +19,12 @@
     margin: 0;
   }
 }
+.day-project:hover {
+  filter: brightness(1.2);
+}
 .day-project {
+  cursor: pointer;
+}
+.completed {
+  opacity: 0.5;
 }

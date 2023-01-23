@@ -1,5 +1,6 @@
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
+import Calendar from "../../components/Calendar";
 import Controlbar from "../../components/Controlbar";
 import Todo from "../../components/Todo";
 import { useFecth } from "../../hooks/useFetch";
@@ -15,6 +16,8 @@ export default function Task() {
   const { data, setReq } = useFecth();
   const [reload, setReload] = useState(false);
   const [todos, setTodos] = useState(data?.task?.todos);
+
+  const [mode, setMode] = useState("card");
   useEffect(() => {
     if (reload) {
       setReq({
@@ -38,12 +41,28 @@ export default function Task() {
       <div>
         <h1> {data?.task?.name}</h1>
       </div>
-      <Controlbar action={"addtodo"} setReload={setReload} />
-      <div className={styles.grid}>
-        {todos?.map((todo: TodoInterface) => (
-          <Todo key={todo._id} todo={todo} setReload={setReload} />
-        ))}
-      </div>
+      <Controlbar
+        action={"addtodo"}
+        setReload={setReload}
+        mode={mode}
+        setMode={setMode}
+      />
+      {mode === "card" ? (
+        <>
+          <div className={styles.grid}>
+            {todos?.map((todo: TodoInterface) => (
+              <Todo key={todo._id} todo={todo} setReload={setReload} />
+            ))}
+          </div>
+        </>
+      ) : null}
+      {mode === "calendar" ? (
+        <>
+          <div className={styles.containercal}>
+            <Calendar entities={data?.task?.todos} type={"task"} />
+          </div>
+        </>
+      ) : null}
     </>
   );
 }

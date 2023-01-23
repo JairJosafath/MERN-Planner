@@ -1,12 +1,15 @@
 import styles from "./day.styles.module.scss";
 import { Project, Task, Todo } from "../../types/types";
+import { useRouter } from "next/router";
 
 interface Props extends React.HTMLAttributes<HTMLDivElement> {
   date: Date;
   active: boolean;
-  entities: Project[] | Task[] | Todo[];
+  entities: Project[] | Task[] | Todo[] | undefined;
+  type: string;
 }
-export default function Day({ date, active, entities, ...props }: Props) {
+export default function Day({ date, active, entities, type, ...props }: Props) {
+  const router = useRouter();
   const activeProjects: Project[] | Task[] | Todo[] = entities?.filter(
     (entity: Project | Task | Todo) =>
       new Date(entity?.startDate ? entity?.startDate : "").getTime() <=
@@ -25,7 +28,17 @@ export default function Day({ date, active, entities, ...props }: Props) {
               style={{
                 background: entity?.color ? entity?.color : "grey",
               }}
-              className={styles["day-project"]}
+              className={`${styles["day-project"]} ${
+                entity.status === "completed" ? styles["completed"] : ""
+              }`}
+              onClick={() => {
+                if ("tasks" in entity) {
+                  router.push(`/project/${entity._id}`);
+                } else if ("todos" in entity || type === "task") {
+                  console.log("uhmmm");
+                  router.push(`/task/${entity._id}`);
+                }
+              }}
             >
               <p>
                 {"title" in entity
