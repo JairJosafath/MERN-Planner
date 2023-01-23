@@ -39,7 +39,7 @@ export default function Home() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   useEffect(() => {
-    if (data) setProjects(data?.projects);
+    if (data?.projects) setProjects(data?.projects);
   }, [data]);
   return (
     <>
@@ -57,7 +57,7 @@ export default function Home() {
         setMode={setMode}
       />
 
-      {loading && !data?.projects ? (
+      {loading && !projects ? (
         <div className={styles.loadingini}>
           <div className={styles.loading}>
             <AiOutlineLoading />
