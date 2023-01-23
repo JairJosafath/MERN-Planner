@@ -6,7 +6,7 @@ A planner app made using the MERN tech stack using NEXT JS and SCSS!
 
 videos:
 
-## [app overview](https://youtu.be/H6Ff0-ZlMGE)
+## [app overview](https://youtu.be/tpUUoc834o0)
 
 ## [app -dev overview](https://youtu.be/qwsbSQcKWBg)
 
@@ -26,7 +26,6 @@ same counts for tasks and todos!
 
 TODO:
 
-- add calendar view
 - store keys in .env
 
 Regards,
