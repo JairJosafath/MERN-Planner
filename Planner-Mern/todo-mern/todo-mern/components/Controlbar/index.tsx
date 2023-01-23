@@ -43,37 +43,39 @@ export default function Controlbar({
   setReload,
   setMode,
   mode,
-  setReq,
-}: Props) {
+}: // setReq,
+Props) {
   const [search, setSearch] = useState("");
   const ctx = useContext(ModalCTX);
 
-  useEffect(() => {
-    const t = setTimeout(() => {
-      if (search.length >= 3 && setReq) {
-        setReq({
-          url: `api/search${action.replace("add", "")}?value=${encodeURI(
-            search
-          )}`,
-        });
-      } else if (search.length === 0) setReload(true);
-    }, 1000);
-    return () => clearTimeout(t);
-  }, [search, setReq, setReload, action]);
+  // useEffect(() => {
+  //   const t = setTimeout(() => {
+  //     if (search.length >= 3 && setReq && action === "addproject") {
+  //       setReq({
+  //         url: `api/search${action.replace("add", "")}?value=${encodeURI(
+  //           search
+  //         )}`,
+  //       });
+  //     } else if (search.length === 0) setReload(true);
+  //   }, 1000);
+  //   return () => clearTimeout(t);
+  // }, []);
   return (
     <div className={styles["wrapper"]}>
       <div className={styles["controlbar-content"]}>
-        {
-          <div style={!setReq ? { visibility: "hidden" } : {}}>
+        {false && (
+          <div>
             <Input
               placeholder="type to search"
               inputSize="lg"
               value={search}
-              onChange={(e) => setSearch(e.target.value)}
+              onChange={(e) =>
+                action === "addproject" ? setSearch(e.target.value) : null
+              }
             />
             <AiOutlineSearch />
           </div>
-        }
+        )}
         <div>
           <AiFillAppstore
             onClick={() => setMode("card")}
