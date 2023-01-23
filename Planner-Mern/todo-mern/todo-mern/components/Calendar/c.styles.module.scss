@@ -1,0 +1,67 @@
+@use "../../styles/layout.module" as l;
+.calendar-wrapper {
+}
+
+.calendar-content {
+  .cal-body {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+  }
+  .calendar-header {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    max-width: 700px;
+    margin: 0 auto;
+    div {
+      display: block;
+      text-align: center;
+      h4,
+      h3 {
+        margin: 0;
+      }
+    }
+    svg {
+      font-size: x-large;
+    }
+  }
+}
+
+.calendar-header-days {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  max-width: 80%;
+  margin: 20px auto;
+}
+
+.calendar-main {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  max-width: 80%;
+  margin: 20px auto;
+  grid-row: 6;
+}
+
+.day {
+  border: 1px solid;
+  height: 130px;
+  background: grey;
+  border-radius: 0.2rem;
+  padding: 2px;
+  overflow-y: scroll;
+  span {
+    opacity: 0;
+  }
+}
+.day::-webkit-scrollbar {
+  display: none;
+}
+
+.day-in-month {
+  @extend .day;
+  background: inherit;
+}
+.today {
+  background: l.$primary;
+  color: white;
+}

@@ -35,3 +35,18 @@ export function onChangeDelay(
   }, 1000);
   return () => clearTimeout(timeout);
 }
+
+export const months = (year: number) => [
+  { label: "January", days: 31 },
+  { label: "February", days: year % 4 === 0 ? 29 : 28 },
+  { label: "March", days: 31 },
+  { label: "April", days: 30 },
+  { label: "May", days: 31 },
+  { label: "June", days: 30 },
+  { label: "July", days: 31 },
+  { label: "August", days: 31 },
+  { label: "September", days: 30 },
+  { label: "October", days: 31 },
+  { label: "November", days: 30 },
+  { label: "December", days: 31 },
+];
