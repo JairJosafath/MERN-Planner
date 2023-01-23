@@ -1,4 +1,10 @@
-import { Dispatch, SetStateAction, useContext } from "react";
+import {
+  Dispatch,
+  SetStateAction,
+  useContext,
+  useEffect,
+  useState,
+} from "react";
 import {
   AiFillAppstore,
   AiFillCalendar,
@@ -19,6 +25,17 @@ interface Props {
   setReload: Dispatch<SetStateAction<boolean>>;
   mode: string;
   setMode: Dispatch<SetStateAction<string>>;
+  setReq?: Dispatch<
+    SetStateAction<
+      | {
+          url: string;
+          headers?: HeadersInit | undefined;
+          body?: object | undefined;
+          method?: string | undefined;
+        }
+      | undefined
+    >
+  >;
 }
 
 export default function Controlbar({
@@ -26,15 +43,37 @@ export default function Controlbar({
   setReload,
   setMode,
   mode,
+  setReq,
 }: Props) {
+  const [search, setSearch] = useState("");
   const ctx = useContext(ModalCTX);
+
+  useEffect(() => {
+    const t = setTimeout(() => {
+      if (search.length >= 3 && setReq) {
+        setReq({
+          url: `api/search${action.replace("add", "")}?value=${encodeURI(
+            search
+          )}`,
+        });
+      } else if (search.length === 0) setReload(true);
+    }, 1000);
+    return () => clearTimeout(t);
+  }, [search, setReq, setReload, action]);
   return (
     <div className={styles["wrapper"]}>
       <div className={styles["controlbar-content"]}>
-        <div>
-          <Input placeholder="type to search" />
-          <AiOutlineSearch />
-        </div>
+        {
+          <div style={!setReq ? { visibility: "hidden" } : {}}>
+            <Input
+              placeholder="type to search"
+              inputSize="lg"
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+            />
+            <AiOutlineSearch />
+          </div>
+        }
         <div>
           <AiFillAppstore
             onClick={() => setMode("card")}

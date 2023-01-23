@@ -47,3 +47,9 @@
     border: solid 1px transparentize($color: l.$color-dark, $amount: 0.5);
   }
 }
+.lg {
+  input {
+    height: 30px;
+    font-size: large;
+  }
+}

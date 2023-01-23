@@ -10,6 +10,7 @@ interface Props extends React.InputHTMLAttributes<HTMLInputElement> {
   uploaded?: boolean;
   loading?: boolean;
   error?: boolean;
+  inputSize?: "sm" | "md" | "lg";
 }
 /**
  * statefull text input
@@ -18,6 +19,7 @@ export default function Input({
   uploaded = false,
   loading = false,
   error = false,
+  inputSize = "md",
   ...props
 }: Props) {
   const ctx = useContext(Darkmode);
@@ -26,7 +28,9 @@ export default function Input({
         ${uploaded ? styles.success : ""}
         ${error ? styles.error : ""} ${
     ctx?.darkmode ? styles["input-dark"] : styles["input-light"]
-  }
+  } ${inputSize === "sm" ? styles["sm"] : ""} ${
+    inputSize === "md" ? styles["md"] : ""
+  } ${inputSize === "lg" ? styles["lg"] : ""}
   `;
   return (
     <div className={styles.wrapper}>

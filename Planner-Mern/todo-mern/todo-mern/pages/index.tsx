@@ -50,6 +50,7 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <Controlbar
+        setReq={setReq}
         action={"addproject"}
         setReload={setReload}
         mode={mode}
