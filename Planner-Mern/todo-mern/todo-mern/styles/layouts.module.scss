@@ -1,0 +1,47 @@
+@use "./state.animations.scss" as a;
+.grid {
+  display: grid;
+  width: 100%;
+  grid-template-columns: 1fr 1fr 1fr;
+  justify-items: center;
+  @media (width<1300px) {
+    grid-template-columns: 1fr 1fr;
+  }
+  @media (width<900px) {
+    grid-template-columns: 1fr;
+  }
+}
+
+.containercal {
+  display: grid;
+  width: 100%;
+  grid-template-columns: 1fr;
+}
+
+.loadingini {
+  width: 100%;
+  animation: blink 5s infinite ease;
+  .loading {
+    display: grid;
+    justify-content: center;
+
+    svg {
+      font-size: 100px;
+      margin: 30px;
+      animation-duration: 1.3s;
+    }
+  }
+}
+@keyframes blink {
+  0% {
+    opacity: 0.5;
+  }
+
+  50% {
+    opacity: 0.7;
+  }
+
+  100% {
+    opacity: 1;
+  }
+}

@@ -1,20 +1,20 @@
 /* SCSS HEX */
-$black-hex: #000000ff;
+$black-hex: #242424;
 $indigo-hex: #42047eff;
 $medium-spring-green-hex: #07f49eff;
-$white-hex: #ffffffff;
+$white-hex: #e6e6e6;
 
 /* SCSS HSL */
-$black-hsl: hsla(0, 0%, 0%, 1);
+$black-hsl: hsl(0, 0%, 14%);
 $indigo-hsl: hsla(270, 94%, 25%, 1);
 $medium-spring-green-hsl: hsla(158, 94%, 49%, 1);
-$white-hsl: hsla(0, 0%, 100%, 1);
+$white-hsl: hsl(0, 0%, 90%);
 
 /* SCSS RGB */
-$black-rgb: rgba(0, 0, 0, 1);
+$black-rgb: rgb(36, 36, 36);
 $indigo-rgb: rgba(66, 4, 126, 1);
 $medium-spring-green-rgb: rgba(7, 244, 158, 1);
-$white-rgb: rgba(255, 255, 255, 1);
+$white-rgb: rgb(230, 230, 230);
 
 $black-blue-gradient: linear-gradient(
   225deg,

@@ -1,0 +1,11 @@
+.wrapper {
+  padding: 20px;
+}
+.content {
+  display: flex;
+  align-items: center;
+  gap: 30px;
+  svg {
+    font-size: x-large;
+  }
+}

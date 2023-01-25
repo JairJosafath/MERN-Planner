@@ -1,0 +1,54 @@
+@use "../../styles/layout.module" as l;
+@use "../../styles//state.animations";
+.wrapper {
+  display: inline-block;
+  margin: 2px;
+}
+.content {
+  position: relative;
+  textarea {
+    border: none;
+    padding: 5px;
+    border-radius: 1rem;
+    padding-left: 10px;
+    resize: none;
+    background-color: inherit;
+    color: inherit;
+  }
+  textarea::-webkit-scrollbar {
+    display: none;
+  }
+  textarea:hover {
+    padding: 4px;
+    padding-left: 10px;
+  }
+  textarea:focus-visible {
+    outline: none;
+    padding: 4px;
+    padding-left: 10px;
+  }
+
+  svg {
+    position: absolute;
+    top: 5px;
+    right: 7px;
+    border-radius: 50%;
+  }
+}
+
+.textarea-dark {
+  textarea:hover {
+    border: solid 1px transparentize($color: l.$color-dark, $amount: 0.8);
+  }
+  textarea:focus-visible {
+    border: solid 1px transparentize($color: l.$color-dark, $amount: 0.5);
+  }
+}
+.textarea-light {
+  textarea:hover {
+    border: solid 1px transparentize($color: l.$color, $amount: 0.8);
+  }
+  textarea:focus-visible {
+    border: solid 1px transparentize($color: l.$color, $amount: 0.5);
+  }
+}

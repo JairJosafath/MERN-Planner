@@ -1,374 +1,244 @@
-import { Todo as TodoI } from "../../types/types";
-import styles from "../../styles/components/projects/projects.module.scss";
+import { useRouter } from "next/router";
 import {
-  AiFillCheckSquare,
-  AiFillDelete,
-  AiFillExclamationCircle,
-  AiOutlineExclamation,
-  AiOutlineMore,
-} from "react-icons/ai";
-import {
+  Dispatch,
+  SetStateAction,
   useContext,
   useEffect,
   useState,
-  Dispatch,
-  SetStateAction,
 } from "react";
-import { Ctx } from "../Layout";
-import { formatDate } from "../../util";
-import { NextRouter, useRouter } from "next/router";
+import {
+  AiFillCheckCircle,
+  AiFillCheckSquare,
+  AiOutlineCheck,
+  AiOutlineClose,
+  AiOutlineExclamation,
+  AiOutlineLoading,
+  AiOutlineMore,
+} from "react-icons/ai";
+import { useTodo } from "../../hooks/useTodo";
+import { ModalCTX } from "../../pages/_app";
+import { Todo as TodoInterface } from "../../types/types";
+import { formatDate, onChangeDelay } from "../../util";
+import Card from "../Card";
+import Header from "../Card.Header";
+import Status from "../Card.Status";
+import Colorpicker from "../Colorpicker";
+import Datepicker from "../Datepicker";
+import Dropdown from "../Dropdown";
+import Input from "../Input";
+import Menu from "../Menu";
+import Prioritypicker from "../Prioritypicker";
+import TextArea from "../TextArea";
+
 interface Props {
-  todo?: TodoI;
+  todo?: TodoInterface;
   setReload?: Dispatch<SetStateAction<boolean>>;
 }
+
 export default function Todo({ todo, setReload }: Props) {
+  const ctx = useContext(ModalCTX);
+  const [temp, setTemp] = useState<TodoInterface>({});
+  const [showMore, setShowMore] = useState(false);
   const router = useRouter();
-  const { id } = router.query;
-  const context = useContext(Ctx);
-  const [showmenu, setShowMenu] = useState<string | undefined>("");
-  const [showPriorityMenu, setShowPriorityMenu] = useState<string | undefined>(
-    ""
-  );
-  const [showColorMenu, setShowColorMenu] = useState<string | undefined>("");
-  const [color, setColor] = useState("");
-  const [title, setName] = useState(todo?.title);
-  const [description, setDescription] = useState(todo?.description);
-  const [startDate, setStartDate] = useState(
-    formatDate(todo?.startDate ? todo?.startDate : "")
-  );
-  const [dueDate, setDueDate] = useState(
-    formatDate(todo?.dueDate ? todo?.dueDate : "")
-  );
-  const [newTodo, setNewTodo] = useState<TodoI>();
-
+  const {
+    setUpdateArgs,
+    updateArgs,
+    setAddTodo,
+    setDeleteTodo,
+    loading,
+    setError,
+    error,
+    title,
+    setName,
+    description,
+    setDescription,
+    data,
+    success,
+  } = useTodo(todo);
   useEffect(() => {
-    let timeout: NodeJS.Timeout;
-    if (
-      (title ? title?.length > 3 : false) &&
-      title !== todo?.title &&
-      todo?._id
-    )
-      timeout = setTimeout(() => {
-        updateTodo(todo?._id, { title: title });
-        setReload ? setReload(true) : console.log("gmhh no reload");
-      }, 1000);
-    return () => clearTimeout(timeout);
-  }, [setReload, title, todo?._id, todo?.title]);
-
-  useEffect(() => {
-    let timeout: NodeJS.Timeout;
-    if (
-      (description ? description?.length > 3 : false) &&
-      description !== todo?.description &&
-      todo?._id
-    )
-      timeout = setTimeout(() => {
-        updateTodo(todo?._id, { description: description });
-        setReload ? setReload(true) : console.log("gmhh no reload");
-      }, 1000);
-    return () => clearTimeout(timeout);
-  }, [description, setReload, todo?._id, todo?.description]);
-
-  useEffect(() => {
-    if (
-      formatDate(todo?.startDate ? todo?.startDate : "") !== startDate &&
-      todo?._id
-    )
-      updateTodo(todo?._id, { startDate: startDate });
-    setReload ? setReload(true) : console.log("gmhh no reload");
-  }, [setReload, startDate, todo?._id, todo?.startDate]);
-  useEffect(() => {
-    if (formatDate(todo?.dueDate ? todo?.dueDate : "") !== dueDate && todo?._id)
-      updateTodo(todo?._id, { dueDate: dueDate });
-    setReload ? setReload(true) : console.log("gmhh no reload");
-  }, [dueDate, setReload, todo?._id, todo?.dueDate]);
-  useEffect(() => {
-    if (!todo?._id) {
-      setNewTodo({
-        title: title,
-        description: description,
-        startDate: startDate,
-        dueDate: dueDate,
-        color: color,
+    if (!todo?._id)
+      ctx?.setModal({
+        ...ctx.modal,
+        action() {
+          setAddTodo({
+            ...temp,
+            task: { id: router.query.id?.toString() },
+          });
+        },
       });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [
+    temp.color,
+    temp.description,
+    temp.dueDate,
+    temp.title,
+    temp.priority,
+    temp.startDate,
+    temp.status,
+  ]);
+  useEffect(() => {
+    if (!todo?._id && updateArgs?.body && setTemp) {
+      setTemp({ ...temp, ...updateArgs?.body });
     }
-  }, [color, description, dueDate, title, todo?._id, startDate, id]);
+  }, [todo?._id, temp, updateArgs?.body]);
+
+  useEffect(() => {
+    if (data && setReload) {
+      setReload(true);
+    }
+  }, [data, setReload]);
+
+  useEffect(() => {
+    if (temp.title && success) {
+      setTemp({});
+      ctx?.setModal({ ...ctx.modal, action: undefined, visible: false });
+    }
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [temp.title, success]);
 
   return (
-    <div
-      key={todo?._id}
-      className={
-        context?.darkMode ? styles["project-dark"] : styles["project-light"]
-      }
-      onClick={() => {
-        showmenu ? setShowMenu("") : null;
-        showPriorityMenu ? setShowPriorityMenu("") : null;
-        // todo?._id ? router.push(`/todo/${todo?._id}`) : null;
-      }}
-    >
-      <div className={styles["flex-header"]}>
-        <input
-          type={"text"}
+    <Card shadow={todo ? true : false}>
+      <Header>
+        <Input
           value={title}
-          placeholder="todo title"
+          placeholder={"add a title for this todo"}
           onChange={(e) => {
-            e.stopPropagation();
-            setName(e.target.value);
+            if (todo) setName(e.target.value);
+            else if (setTemp) {
+              setTemp({ ...temp, title: e.target.value });
+            }
           }}
+          onClick={(e) => e.stopPropagation()}
         />
-        <div>
-          {todo ? (
-            <>
-              <div
-                className={styles["color-circle"]}
-                onClick={(e) => {
-                  e.stopPropagation();
-                  showColorMenu === todo?._id
-                    ? setShowColorMenu("")
-                    : setShowColorMenu(todo?._id);
-                }}
-                style={{ background: todo?.color ? todo?.color : "grey" }}
-              />
-              <AiFillExclamationCircle
-                color={
-                  todo?.priority === 1
-                    ? "red"
-                    : todo?.priority === 2
-                    ? "orange"
-                    : "blue"
-                }
-                onClick={(e) => {
-                  e.stopPropagation();
-                  setShowPriorityMenu(todo?._id);
-                }}
-              />
-              <AiFillCheckSquare
-                color={todo?.status === "in progress" ? "grey" : "green"}
-                onClick={(e) => {
-                  e.stopPropagation();
-                  updateTodo(
-                    todo?._id,
-                    todo?.status === "in progress"
-                      ? { status: "completed" }
-                      : { status: "in progress" }
-                  );
-                  setReload ? setReload(true) : console.log("gmhh no reload");
-                }}
-              />
-              <AiOutlineMore
-                onClick={(e) => {
-                  e.stopPropagation();
-                  showmenu ? setShowMenu("") : setShowMenu(todo?._id);
-                }}
-              />
-            </>
-          ) : null}
-        </div>
-      </div>
-      {showmenu === todo?._id ? (
-        <menu className={styles.menu} onClick={() => setShowMenu("")}>
-          <ul>
-            {/* <li>archive todo</li> */}
-            <li
+        <Colorpicker
+          color={todo?._id ? todo?.color : temp?.color}
+          setColor={setUpdateArgs}
+        />
+        <Prioritypicker
+          priority={todo?._id ? todo?.priority : temp?.priority}
+          setPriority={setUpdateArgs}
+        />
+        {todo?._id ? (
+          <>
+            <AiFillCheckSquare
+              style={{
+                color: todo?._id
+                  ? todo?.status === "completed"
+                    ? "green"
+                    : todo?.status === "in progress"
+                    ? "lightgray"
+                    : "grey"
+                  : temp?.status === "completed"
+                  ? "green"
+                  : temp?.status === "in progress"
+                  ? "lightgray"
+                  : "grey",
+              }}
               onClick={(e) => {
                 e.stopPropagation();
-                handleDeleteTodo(todo?._id);
-                setReload ? setReload(true) : console.log("gmhh no reload");
-                setShowMenu("");
+                setUpdateArgs({
+                  key: "status",
+                  value:
+                    todo?.status === "in progress"
+                      ? "completed"
+                      : "in progress",
+                  body: {
+                    status: todo?._id
+                      ? todo?.status === "in progress"
+                        ? "completed"
+                        : "in progress"
+                      : temp?.status === "in progress"
+                      ? "completed"
+                      : "in progress",
+                  },
+                });
               }}
-            >
-              delete todo
-            </li>
-          </ul>
-        </menu>
-      ) : null}
-      <div>
-        {showmenu === todo?._id ? (
-          <menu className={styles.menu} onClick={() => setShowMenu("")}>
-            <ul>
-              {/* <li>archive todo</li> */}
-              <li
-                onClick={(e) => {
-                  e.stopPropagation();
-                  handleDeleteTodo(todo?._id);
-                  setReload ? setReload(true) : console.log("gmhh no reload");
-                }}
-              >
-                delete todo
-              </li>
-            </ul>
-          </menu>
+            />
+            <AiOutlineMore
+              onClick={(e) => {
+                e.stopPropagation();
+                setShowMore(!showMore);
+              }}
+            />
+            <Menu
+              variant="outline"
+              show={showMore}
+              items={[
+                // {
+                //   label: "open todo",
+                //   onClick() {
+                //     router.push(`/todo/${todo?._id}`);
+                //   },
+                // },
+                {
+                  label: "delete todo",
+                  onClick: () => {
+                    ctx?.setModal({
+                      title: "Delete Todo",
+                      visible: true,
+                      action() {
+                        setDeleteTodo(todo?._id);
+                        ctx?.setModal({
+                          ...ctx.modal,
+                          action: undefined,
+                          visible: false,
+                        });
+                      },
+                      children: (
+                        <>
+                          <p>Are you sure you want to delete </p>
+                          <h3>{todo?.title}</h3>
+                        </>
+                      ),
+                    });
+                    setShowMore(false);
+                  },
+                },
+              ]}
+            />
+          </>
         ) : null}
-        {showColorMenu === todo?._id ? (
-          <menu className={styles.menu}>
-            <ul>
-              {["red", "green", "blue", "yellow"].map((c, index) => (
-                <div
-                  key={c}
-                  className={styles["color-circle"]}
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    updateTodo(todo?._id, { color: c });
-                    setReload ? setReload(true) : console.log("gmhh no reload");
+      </Header>
+      <TextArea
+        value={description}
+        placeholder={"add a description for this todo"}
+        onChange={(e) => {
+          if (todo) setDescription(e.target.value);
+          else if (setTemp) {
+            setTemp({ ...temp, description: e.target.value });
+          }
+        }}
+        onClick={(e) => e.stopPropagation()}
+      />
 
-                    setShowColorMenu("");
-                  }}
-                  style={{ background: c }}
-                ></div>
-              ))}
-              <div>
-                <div>
-                  <input
-                    type={"text"}
-                    value={color}
-                    placeholder={"color code"}
-                    onChange={(e) => setColor(e.target.value)}
-                  />
-                </div>
-                <button
-                  onClick={(e) => {
-                    if (color) {
-                      e.stopPropagation();
-                      updateTodo(todo?._id, { color: color });
-                      setReload
-                        ? setReload(true)
-                        : console.log("gmhh no reload");
-                      setColor("");
-                    }
-                    setShowColorMenu("");
-                  }}
-                >
-                  Set
-                </button>
-                <button
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    setShowColorMenu("");
-                  }}
-                >
-                  cancel
-                </button>
-              </div>
-            </ul>
-          </menu>
-        ) : null}
-        {showPriorityMenu === todo?._id ? (
-          <menu
-            className={styles.menu}
-            onClick={(e) => {
-              e.stopPropagation();
-              setShowPriorityMenu("");
-            }}
-          >
-            <ul>
-              {["high", "medium", "low"].map((p, index) => (
-                <li
-                  key={p}
-                  onClick={(e) => {
-                    updateTodo(todo?._id, { priority: index + 1 });
-                    setReload ? setReload(true) : console.log("gmhh no reload");
-                    setShowPriorityMenu("");
-                  }}
-                >
-                  {p}
-                </li>
-              ))}
-            </ul>
-          </menu>
-        ) : null}
-        <textarea
-          value={description}
-          placeholder={"description"}
-          onChange={(e) => {
-            e.stopPropagation();
-            setDescription(e.target.value);
-          }}
-        />
-        <div className={styles.flex}>
-          <div>
-            <label>Start</label>
-            <input
-              type={"date"}
-              value={startDate}
-              onChange={(e) => {
-                e.stopPropagation();
-                setStartDate(e.target.value);
-              }}
-            />
-          </div>
-          <div>
-            <label>Due</label>
-            <input
-              type={"date"}
-              value={dueDate}
-              onChange={(e) => {
-                e.stopPropagation();
-                setDueDate(e.target.value);
-              }}
-            />
-          </div>
-        </div>
-      </div>
-      {todo === undefined ? (
-        <button
-          onClick={(e) => {
-            handleAddTodo(id ? id?.toString() : "", newTodo);
-            setReload ? setReload(true) : console.log("gmhh no reload");
-            setName("");
-            setDescription("");
-            setStartDate("");
-            setDueDate("");
-            setColor("");
-          }}
-        >
-          add todo
-        </button>
-      ) : null}
-    </div>
+      <Datepicker
+        label={"Start Date"}
+        setDate={setUpdateArgs}
+        date={formatDate(
+          todo?._id
+            ? todo?.startDate
+              ? todo?.startDate
+              : ""
+            : temp?.startDate
+            ? temp?.startDate
+            : ""
+        )}
+      />
+      <Datepicker
+        label={"End Date"}
+        setDate={setUpdateArgs}
+        date={formatDate(
+          todo?._id
+            ? todo?.dueDate
+              ? todo?.dueDate
+              : ""
+            : temp?.dueDate
+            ? temp?.dueDate
+            : ""
+        )}
+      />
+      <Status success={success} loading={loading} error={error} />
+    </Card>
   );
-}
-
-function handleDeleteTodo(id: string | undefined) {
-  async function fn() {
-    const res = await fetch(`/api/deletetodo/${id}`, {
-      headers: {
-        "Content-Type": "application/json",
-      },
-      method: "DELETE",
-    });
-
-    console.log(await res.json());
-  }
-  if (id) fn();
-}
-function updateTodo(id: string | undefined, updated: TodoI | undefined) {
-  console.log("idated", updated);
-  async function fn() {
-    const res = await fetch(`/api/updatetodo/${id}`, {
-      headers: {
-        "Content-Type": "application/json",
-      },
-      method: "POST",
-      body: JSON.stringify(updated),
-    });
-
-    console.log(await res.json());
-  }
-  if (id) fn();
-}
-function handleAddTodo(taskId: string, newTodo: TodoI | undefined) {
-  console.log("idated", newTodo);
-  const body = { ...newTodo, task: { id: taskId } };
-  async function fn() {
-    const res = await fetch(`/api/addtodo`, {
-      headers: {
-        "Content-Type": "application/json",
-      },
-      method: "POST",
-      body: JSON.stringify(body),
-    });
-
-    console.log(await res.json());
-  }
-  if (newTodo?.title) fn();
 }

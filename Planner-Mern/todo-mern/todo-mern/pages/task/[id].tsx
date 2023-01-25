@@ -1,70 +1,68 @@
 import { useRouter } from "next/router";
-import {
-  AiFillCheckSquare,
-  AiFillPlusCircle,
-  AiOutlineExclamation,
-  AiOutlineMore,
-  AiOutlinePlusCircle,
-} from "react-icons/ai";
-import styles from "../../styles/components/task/task.module.scss";
-import AddTodo from "../../components/addTodo";
-import { useState, useEffect } from "react";
-import { Task as Taski, Todo as TodoI } from "../../types/types";
+import { useEffect, useState } from "react";
+import Calendar from "../../components/Calendar";
+import Controlbar from "../../components/Controlbar";
 import Todo from "../../components/Todo";
+import { useFecth } from "../../hooks/useFetch";
+import styles from "../../styles/layouts.module.scss";
+import {
+  Task as TaskInterface,
+  Todo as TodoInterface,
+} from "../../types/types";
 
-interface Props {
-  task: Taski;
-}
-export default function Task({ task }: Props) {
+export default function Task() {
   const router = useRouter();
   const { id } = router.query;
-  const [shownewTodo, setShownewTodo] = useState(false);
-  const [showmenu, setShowMenu] = useState("");
+  const { data, setReq } = useFecth();
   const [reload, setReload] = useState(false);
+  const [todos, setTodos] = useState(data?.task?.todos);
 
+  const [mode, setMode] = useState("card");
   useEffect(() => {
     if (reload) {
-      router.replace(router.asPath);
+      setReq({
+        url: `/api/getTask/${id}`,
+      });
       setReload(false);
     }
-  }, [reload, router]);
+  }, [id, reload, setReq]);
+  useEffect(() => {
+    setReq({
+      url: `/api/getTask/${id}`,
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+  useEffect(() => {
+    if (data?.task) setTodos(data?.task?.todos);
+  }, [data?.task]);
 
   return (
     <>
-      <div
-        className={styles.wrapper}
-        onClick={() => (showmenu ? setShowMenu("") : null)}
-      >
-        <h1> Task : {task?.name}</h1>
-
-        <div className={styles.controls}>
-          <h2>Todos:</h2>
-
-          <AiFillPlusCircle
-            onClick={() => setShownewTodo(!shownewTodo)}
-            className={shownewTodo ? styles.rotated : undefined}
-          />
-        </div>
-        {shownewTodo ? <Todo setReload={setReload} /> : null}
-        <ul className={styles.grid}>
-          {task?.todos?.map((todo: TodoI) => (
-            <Todo key={todo?._id} todo={todo} setReload={setReload} />
-          ))}
-        </ul>
+      <div>
+        <h1> {data?.task?.name}</h1>
       </div>
+      <Controlbar
+        action={"addtodo"}
+        setReload={setReload}
+        mode={mode}
+        setMode={setMode}
+      />
+      {mode === "card" ? (
+        <>
+          <div className={styles.grid}>
+            {todos?.map((todo: TodoInterface) => (
+              <Todo key={todo._id} todo={todo} setReload={setReload} />
+            ))}
+          </div>
+        </>
+      ) : null}
+      {mode === "calendar" ? (
+        <>
+          <div className={styles.containercal}>
+            <Calendar entities={data?.task?.todos} type={"task"} />
+          </div>
+        </>
+      ) : null}
     </>
   );
-}
-
-// This gets called on every request
-export async function getServerSideProps(context: any) {
-  const id: string = context.params.id;
-  // Fetch data from external API
-  const res = await fetch(`http://localhost:3001/api/gettask/${id}`);
-  const data = await res.json();
-  const task: Taski = data.body.task;
-  console.log(task);
-
-  // Pass data to the page via props
-  return { props: { task } };
 }

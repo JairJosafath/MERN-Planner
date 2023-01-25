@@ -4,7 +4,11 @@ module.exports = function (req, res) {
   async function fn() {
     let response = {};
     try {
-      const updated = Project.findByIdAndUpdate(req.params.id, { ...req.body });
+      const updated = Project.findByIdAndUpdate(
+        req.params.id,
+        { ...req.body },
+        { new: true }
+      );
       const result = await updated.exec();
       response = { statusCode: 200, body: result };
     } catch (e) {

@@ -1,0 +1,11 @@
+@use "../../styles/state.animations";
+
+.content-status {
+  position: relative;
+
+  svg {
+    position: absolute;
+    right: 10px;
+    top: -40px;
+  }
+}
