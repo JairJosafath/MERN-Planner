@@ -1,0 +1,51 @@
+.loading {
+  svg {
+    animation: loading 600ms linear infinite;
+    color: inherit;
+  }
+}
+.error {
+  svg {
+    animation: error 10s ease;
+    color: red;
+    opacity: 0;
+  }
+}
+.success {
+  svg {
+    animation: success 10s ease;
+    color: green;
+    opacity: 0;
+    border-radius: 50%;
+  }
+}
+@keyframes success {
+  from {
+    background: green;
+    color: green;
+    padding: 0.5%;
+    opacity: 1;
+  }
+  to {
+    background: white;
+  }
+}
+@keyframes loading {
+  from {
+    transform: rotate(0);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+@keyframes error {
+  from {
+    background: red;
+    color: white;
+    padding: 1%;
+    opacity: 1;
+  }
+  to {
+    background: white;
+  }
+}

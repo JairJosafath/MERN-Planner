@@ -1,66 +1,67 @@
-import { Project as ProjectI, Task as TaskI } from "../../types/types";
-import styles from "../../styles/components/projects/projects.module.scss";
-import {
-  AiFillCheckSquare,
-  AiFillDelete,
-  AiFillExclamationCircle,
-  AiFillPlusCircle,
-  AiOutlineExclamation,
-  AiOutlineMore,
-} from "react-icons/ai";
-import { useContext, useEffect, useState } from "react";
-import { Ctx } from "../../components/Layout";
-import AddTodo from "../../components/addTodo";
-import Task from "../../components/Task";
 import { useRouter } from "next/router";
+import { useEffect, useState } from "react";
+import Calendar from "../../components/Calendar";
+import Controlbar from "../../components/Controlbar";
+import Task from "../../components/Task";
+import { useFecth } from "../../hooks/useFetch";
+import styles from "../../styles/layouts.module.scss";
+import {
+  Project as ProjectInterface,
+  Task as TaskInterface,
+} from "../../types/types";
 
-interface Props {
-  tasks: TaskI[] | undefined;
-  projectname: string;
-}
-export default function Project({ tasks, projectname }: Props) {
-  const [shownewTask, setShownewTask] = useState(false);
-  const [reload, setReload] = useState(false);
+export default function Project() {
   const router = useRouter();
+  const { id } = router.query;
+  const { data, setReq } = useFecth();
+  const [reload, setReload] = useState(false);
+  const [mode, setMode] = useState("card");
+  const project: ProjectInterface = data?.project;
   useEffect(() => {
     if (reload) {
-      router.replace(router.asPath);
+      setReq({
+        url: `/api/getProject/${id}`,
+      });
       setReload(false);
     }
-  }, [reload, router]);
+  }, [id, reload, setReq]);
+  useEffect(() => {
+    setReq({
+      url: `/api/getProject/${id}`,
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   return (
-    <div className={styles.wrapper}>
-      <h1> Project : {projectname ? projectname : ""}</h1>
-      <div className={styles.controls}>
-        <h2>Tasks:</h2>
-
-        <AiFillPlusCircle
-          onClick={() => setShownewTask(!shownewTask)}
-          className={shownewTask ? styles.rotated : undefined}
-        />
+    <>
+      <div>
+        <h1> {project?.name}</h1>
       </div>
-      {shownewTask ? (
-        <div style={{ marginBottom: "30px" }}>
-          <Task setReload={setReload} />
-        </div>
+      <Controlbar
+        action={"addtask"}
+        setReload={setReload}
+        mode={mode}
+        setMode={setMode}
+      />
+
+      {mode === "card" ? (
+        <>
+          <div className={styles.grid}>
+            {project?.tasks
+              ?.sort((a, b) => (a._id && b._id ? (a._id > b._id ? -1 : 1) : 0))
+              .map((task: TaskInterface) => (
+                <Task key={task._id} task={task} setReload={setReload} />
+              ))}
+          </div>
+        </>
       ) : null}
-      <div className={styles.content}>
-        {tasks?.map((task) => (
-          <Task key={task._id} task={task} setReload={setReload} />
-        ))}
-      </div>
-    </div>
+      {mode === "calendar" ? (
+        <>
+          <div className={styles.containercal}>
+            <Calendar entities={project?.tasks} type={"task"} />
+          </div>
+        </>
+      ) : null}
+    </>
   );
-}
-
-export async function getServerSideProps(context: any) {
-  // Fetch data from external API
-  const res = await fetch(
-    `http://localhost:3001/api/getproject/${context.params.id}`
-  );
-  const data = await res.json();
-  const project: ProjectI = data.body.project;
-
-  // Pass data to the page via props
-  return { props: { tasks: project?.tasks, projectname: project.name } };
 }

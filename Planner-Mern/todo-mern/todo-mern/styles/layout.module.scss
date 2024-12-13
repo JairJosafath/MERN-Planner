@@ -5,29 +5,38 @@ $secondary: cp.$medium-spring-green-hex;
 $color: cp.$black-hex;
 $background: cp.$white-hex;
 $grad: cp.$white-blue-green-gradient;
+//
+$primary-dark: cp.$indigo-hex;
+$secondary-dark: cp.$medium-spring-green-hex;
+$color-dark: cp.$white-hex;
+$background-dark: cp.$black-hex;
+$grad-dark: cp.$white-blue-green-gradient;
 
 .body {
-  .main-content {
-    display: flex;
-  }
   main {
-    flex: 76%;
-    height: 95vh;
+    min-height: calc(100vh - 40px);
+    height: fit-content;
+    max-width: 100%;
+    h1 {
+      text-align: center;
+    }
   }
-  .main-full {
-    flex: 90%;
-    height: 95vh;
-  }
+  // // main {
+  // //   flex: 76%;
+  // //   height: 95vh;
+  // }
+  // .main-full {
+  //   flex: 90%;
+  //   height: 95vh;
+  // }
   .sidenav {
     // position: absolute;
     flex: 24%;
     // z-index: -1;
     top: 0;
     min-width: 300px;
-    height: calc(100vh - 85px);
-    margin-top: 20px;
+    height: 100vh;
     margin-left: 10px;
-    margin-bottom: 20px;
     border-radius: 1rem;
     transition: flex 200ms ease-in-out, opacity 200ms;
 

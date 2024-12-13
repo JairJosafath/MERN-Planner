@@ -1,5 +1,4 @@
 const express = require("express");
-const cors = require("cors");
 const router = express.Router();
 const postProject = require("../controllers/Project/postProject");
 const getProjects = require("../controllers/Project/getProjects");
@@ -18,6 +17,10 @@ const getTodos = require("../controllers/Todo/getTodos");
 const getTodo = require("../controllers/Todo/getTodo");
 const updateTodo = require("../controllers/Todo/updateTodo");
 const deleteTodo = require("../controllers/Todo/deleteTodo");
+
+const searchProject = require("../controllers/Project/searchProject");
+const searchTask = require("../controllers/Task/searchTask");
+const searchTodo = require("../controllers/Todo/searchTodo");
 
 //PROJECT
 //post
@@ -84,4 +87,14 @@ router.delete("/deletetodo/:id", (req, res) => {
   deleteTodo(req, res);
 });
 
+//search
+router.get("/searchproject", (req, res) => {
+  searchProject(req.query, res);
+});
+router.get("/searchtodo", (req, res) => {
+  searchTodo(req.query, res);
+});
+router.get("/searchtask", (req, res) => {
+  searchTask(req.query, res);
+});
 module.exports = router;

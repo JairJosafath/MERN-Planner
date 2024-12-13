@@ -1,0 +1,22 @@
+.wrapper {
+  margin: 20px;
+}
+.content {
+  label {
+    font-size: small;
+  }
+  input {
+    margin: 5px;
+    padding: 5px;
+    border-radius: 0.5rem;
+    border: none;
+    font-size: large;
+    cursor: pointer;
+    background: inherit;
+    color: inherit;
+  }
+  input:hover {
+    border: 1px solid;
+    padding: 4px;
+  }
+}
